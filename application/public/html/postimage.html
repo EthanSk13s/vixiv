@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Pending Title</title>
+    </head>
+    <body>
+        <header>
+            <h1>Some Image Viewer</h1>
+        </header>
+        <nav>
+            <ul>
+                <li><b>Home</b></li>
+                <li>View an Image</li>
+                <li><b>Post Image</b></li>
+                <li>Login</li>
+                <li>Register</li>
+            </ul>
+        </nav>
+        <section>
+            <h2>Post an Image</h2>
+            <form>
+                <fieldset>
+                    <label for="imageTitle">Title:</label>
+                    <input type="text" name="imageTitle" required>
+                    <br>
+                    <label for="imageDesc">Description:</label>
+                    <input type="paragraph" name="imageDesc">
+                    <br>
+                    <label for="image">Image(s):</label>
+                    <input type="file" name="images" id="images" multiple="multiple" required>
+                    <br>
+                    <label for="aup">Before posting, please accept the Acceptable Use Policy</label>
+                    <input type="checkbox" name="aup" id="aup" required>
+                </fieldset>
+                <input type="submit" value="Post Image">
+            </form>
+        </section>
+        <footer>
+            Some statisitics for this site or something
+        </footer>
+    </body>
+</html>
