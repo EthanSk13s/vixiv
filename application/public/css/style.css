@@ -24,6 +24,26 @@ body {
   background-color: #232323;
 }
 
+.flex-container {
+  padding: 10px 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: center;
+}
+
+.row-lg {
+  flex-grow: 9;
+}
+
+.row-md {
+  flex-grow: 1
+}
+
+.force-right {
+  text-align: right;
+}
+
 .img-container img {
   display: block;
   align-items: center;
