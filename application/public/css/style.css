@@ -13,7 +13,7 @@
 }
 
 body {
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font: 16px "Lucida Grande", Helvetica, Arial, sans-serif;
   background-color: var(--primary);
   color: #EFEFEF;
   margin: 0;
@@ -22,8 +22,8 @@ body {
 .container {
   width: 1400px;
   margin: 0 auto;
-  padding-right: 15px;
-  padding-left: 15px;
+  padding-right: 1.1em;
+  padding-left: 1.1em;
 }
 
 .main-container {
@@ -35,7 +35,7 @@ body {
 }
 
 .flex-container {
-  padding: 10px 10px;
+  padding: 0.75em 0.75em;
   display: flex;
   justify-content: left;
   align-items: center;
@@ -50,12 +50,12 @@ body {
 }
 
 .column-lg {
-  padding: 3px;
+  padding: 0.21em;
   flex-grow: 9;
 }
 
 .column-md {
-  padding: 3px;
+  padding: 0.21em;
   flex-grow: 1;
 }
 
@@ -78,7 +78,7 @@ body {
   margin-left: auto;
   margin-right: auto;
   max-width: 100%;
-  max-height: 100vh;
+  max-height: auto;
 }
 
 .nav-content {
@@ -92,32 +92,32 @@ body {
 }
 
 .input-text {
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-  padding: 3px;
-  width: 200px;
-  height: 25px;
+  font: 1rem "Lucida Grande", Helvetica, Arial, sans-serif;
+  padding: 0.21em;
+  width: 14.28em;
+  height: 1.7em;
   display: block;
   margin: auto;
-  border: 1px var(--secondary);
-  border-radius: 2px;
+  border: 0.07em var(--secondary);
+  border-radius: 0.14em;
   color:#EFEFEF;
   background-color: var(--primary);
 }
 
 .post-button {
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font: 1rem "Lucida Grande", Helvetica, Arial, sans-serif;
   background-color: var(--tertiary);
   color: #EFEFEF;
   border: none;
-  border-radius: 3px;
+  border-radius: 0.214em;
   display: block;
   margin: auto;
-  padding: 5px;
+  padding: 0.357em;
 }
 
 .input-label {
-  font-size: 16px;
-  padding: 2px;
+  font-size: 1.14rem;
+  padding: 0.14em;
   display: block;
   text-align: center;
   margin: auto;
@@ -129,7 +129,7 @@ body {
 }
 
 .main-field {
-  border-radius: 5px;
+  border-radius: 0.357em;
   border-color: var(--tertiary);
   background-color: var(--secondary);
 }
@@ -141,7 +141,7 @@ a {
 a.nav-link {
   text-decoration: none;
   display: inline-block;
-  padding: 14px 16px;
+  padding: 1em 1.14em;
   color: #EFEFEF;
 }
 
@@ -159,7 +159,7 @@ nav li:hover {
 }
 
 .input-text:focus {
-  outline: 2px solid #008b8b;
+  outline: 0.142em solid #008b8b;
 }
 
 .post-button:hover {
@@ -167,7 +167,7 @@ nav li:hover {
 }
 
 .post-button:active, .post-button:focus {
-  outline: var(--primary2) solid 2px;
-  box-shadow: -3px 3px 4px var(--primary);
+  outline: var(--primary2) solid 0.142em;
+  box-shadow: -0.214em 0.214em 0.25em var(--primary);
   background-color: var(--secondary)
 }
