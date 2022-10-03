@@ -19,23 +19,31 @@
         </nav>
         <div class="container">
             <main>
-                <section>
+                <section class="flex-container column">
                     <h2>Post an Image</h2>
                     <form>
-                        <fieldset>
-                            <label for="imageTitle">Title:</label>
-                            <input type="text" name="imageTitle" required>
+                        <fieldset class="main-field">
+                            <div class="column-md">
+                                <label class="input-label" for="imageTitle">Title</label>
+                                <input class="input-text" type="text" name="imageTitle" required>
+                            </div>
+                            <div class="column-md">
+                                <label class="input-label"for="imageDesc">Description</label>
+                                <input class="input-text" type="paragraph" name="imageDesc">
+                            </div>
+                            <div class="column-md">
+                                <label class="input-label" for="image">Image(s)</label>
+                                <input class="input-file" type="file" name="images" id="images" multiple="multiple" required>
+                            </div>
                             <br>
-                            <label for="imageDesc">Description:</label>
-                            <input type="paragraph" name="imageDesc">
-                            <br>
-                            <label for="image">Image(s):</label>
-                            <input type="file" name="images" id="images" multiple="multiple" required>
-                            <br>
-                            <label for="aup">Before posting, please accept the Acceptable Use Policy</label>
-                            <input type="checkbox" name="aup" id="aup" required>
+                            <div class="column-md">
+                                <input type="checkbox" name="aup" id="aup" required>
+                                <label for="aup">Before posting, please accept the Acceptable Use Policy</label>
+                            </div>
+                            <div class="column-md">
+                                <input class="post-button" type="submit" value="Post Image">
+                            </div>
                         </fieldset>
-                        <input type="submit" value="Post Image">
                     </form>
                 </section>
             </main>
