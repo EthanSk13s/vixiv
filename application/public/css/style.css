@@ -2,9 +2,17 @@
   box-sizing: border-box;
 }
 
+:root {
+  --primary: #1C1C1C;
+  --primary: #161616;
+  --secondary: #303030;
+  --secondary2: #282828;
+  --tertiary: #232323
+}
+
 body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-  background-color: #1C1C1C;
+  background-color: var(--primary);
   color: #EFEFEF;
   margin: 0;
 }
@@ -17,11 +25,11 @@ body {
 }
 
 .main-container {
-  background-color: #303030;
+  background-color: var(--secondary);
 }
 
 .img-container {
-  background-color: #232323;
+  background-color: var(--tertiary);
 }
 
 .flex-container {
@@ -78,7 +86,7 @@ body {
 }
 
 .nav-title {
-  background-color: #333;
+  background-color: var(--secondary);
 }
 
 input[type="text"], input[type="password"] {
@@ -88,15 +96,15 @@ input[type="text"], input[type="password"] {
   height: 25px;
   display: block;
   margin: auto;
-  border: 1px #303030;
+  border: 1px var(--secondary);
   border-radius: 2px;
   color:#EFEFEF;
-  background-color: #1C1C1C;
+  background-color: var(--primary);
 }
 
 input[type="submit"] {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-  background-color: #232323;
+  background-color: var(--tertiary);
   color: #EFEFEF;
   border: none;
   border-radius: 3px;
@@ -115,8 +123,8 @@ label {
 
 fieldset {
   border-radius: 5px;
-  border-color: #232323;
-  background-color: #303030;
+  border-color: var(--tertiary);
+  background-color: var(--secondary);
 }
 
 a {
@@ -136,11 +144,11 @@ nav ul {
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background-color: #333;
+  background-color: var(--secondary)
 }
 
 nav li:hover {
-  background-color: #232323;
+  background-color: var(--tertiary)
 }
 
 input:focus {
@@ -148,11 +156,11 @@ input:focus {
 }
 
 input[type="submit"]:hover {
-  background-color: #282828
+  background-color: var(--secondary2)
 }
 
 input[type="submit"]:active, input[type="submit"]:focus {
-  outline: #161616 solid 2px;
-  box-shadow: -3px 3px 4px #1C1C1C;
-  background-color: #282828
+  outline: var(--primary2) solid 2px;
+  box-shadow: -3px 3px 4px var(--primary);
+  background-color: var(--secondary)
 }
