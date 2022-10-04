@@ -5,6 +5,7 @@
 }
 
 :root {
+  --default-font: 16px "Lato", Helvetica, sans-serif;
   --primary: #1C1C1C;
   --primary: #161616;
   --secondary: #303030;
@@ -13,7 +14,7 @@
 }
 
 body {
-  font: 16px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font: var(--default-font);
   background-color: var(--primary);
   color: #EFEFEF;
   margin: 0;
@@ -92,7 +93,7 @@ body {
 }
 
 .input-text {
-  font: 1rem "Lucida Grande", Helvetica, Arial, sans-serif;
+  font: var(--default-font);
   padding: 0.21em;
   width: 14.28em;
   height: 1.7em;
@@ -105,10 +106,9 @@ body {
 }
 
 .post-button {
-  font: 1rem "Lucida Grande", Helvetica, Arial, sans-serif;
+  font: var(--default-font);
   background-color: var(--tertiary);
   color: #EFEFEF;
-  border: none;
   border-radius: 0.214em;
   display: block;
   margin: auto;
@@ -163,7 +163,7 @@ nav li:hover {
 }
 
 .post-button:hover {
-  background-color: var(--secondary2)
+  background-color: var(--secondary2);
 }
 
 .post-button:active, .post-button:focus {
