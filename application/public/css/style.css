@@ -84,9 +84,7 @@ body {
 }
 
 .nav-content {
-  display: inline;
   text-decoration: none;
-  float: left;
 }
 
 .nav-title {
@@ -162,21 +160,20 @@ a {
 
 a.nav-link {
   text-decoration: none;
-  display: inline-block;
   padding: 1em 1.14em;
   color: #EFEFEF;
 }
 
-nav ul {
-  text-align: center;
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  background-color: var(--secondary)
+nav {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: flex-start;
+  background-color: var(--secondary);
+  gap: 0.5em
 }
 
-nav li:hover {
+.nav-link:hover {
   background-color: var(--tertiary)
 }
 
@@ -198,4 +195,10 @@ nav li:hover {
   transform: scale(1.03);
   transform-origin: 0 0;
   background-color: var(--secondary2);
+}
+
+@media (max-width: 800px) {
+  nav {
+    flex-direction: column;
+  }
 }
