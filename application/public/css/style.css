@@ -21,7 +21,6 @@ body {
 }
 
 .container {
-  width: 1400px;
   margin: 0 auto;
   padding-right: 1.1em;
   padding-left: 1.1em;
@@ -38,12 +37,14 @@ body {
 .flex-container {
   padding: 0.75em 0.75em;
   display: flex;
-  justify-content: left;
+  justify-content: center;
   align-items: center;
+  gap: 2em;
 }
 
 .flex-container.row {
-  flex-direction: row; 
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 
 .flex-container.column {
@@ -65,7 +66,7 @@ body {
 }
 
 .row-md {
-  flex-grow: 1
+  flex-grow: 0;
 }
 
 .force-right {
@@ -90,6 +91,10 @@ body {
 
 .nav-title {
   background-color: var(--secondary);
+}
+
+.post-flex.row-md {
+  flex-basis: 25%;
 }
 
 .post-container {
