@@ -143,6 +143,14 @@ body {
   margin: auto;
 }
 
+.input-warn {
+  color: #ff0015;
+  padding-top: 0.357em;
+  font-size: 0.75rem;
+  display: block;
+  text-align: center;
+}
+
 .input-file {
   display: block;
   margin: auto;
