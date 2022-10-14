@@ -44,6 +44,14 @@ class IndexPost {
 
         return parentContainer;
     }
+
+    removeSelf(numOfPosts) {
+        let self = document.getElementById(this.id);
+        self.parentElement.removeChild(self);
+
+        numOfPosts--;
+        console.log(numOfPosts);
+    }
 }
 
 // Counting the 2 test posts
@@ -56,8 +64,10 @@ const testPostsJson = fetch(testPosts)
         let container = document.getElementsByClassName("flex-container row");
         for (let i = 0; i < 6; i++) {
             let post = new IndexPost(data[i]["id"], data[i]["title"], data[i]["url"]);
+            let htmlPost = post.createHtmlPost();
+            htmlPost.addEventListener("click", () => post.removeSelf(numOfPosts));
 
-            container[0].appendChild(post.createHtmlPost());
+            container[0].appendChild(htmlPost);
             numOfPosts++;
         }
 
