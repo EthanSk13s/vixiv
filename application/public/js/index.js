@@ -51,30 +51,46 @@ class IndexPost {
 
         numOfPosts--;
         console.log(numOfPosts);
+        return numOfPosts;
     }
 }
 
-// Counting the 2 test posts
-let numOfPosts = 2;
+function createCounter(parent, count) {
+    let counter = document.createElement("div");
+    counter.setAttribute("id", "counter");
+    counter.setAttribute("class", "flex-container column");
+    counter.innerHTML = `The number of posts in index is: ${count}`;
+
+    parent.appendChild(counter);
+}
+
+function setCounter(counter, newCount) {
+    counter.innerHTML = `The number of posts in index is: ${newCount}`;
+}
+
 const testPosts = "https://jsonplaceholder.typicode.com/albums/2/photos"
 
 const testPostsJson = fetch(testPosts)
     .then((response) => response.json())
     .then((data) => {
+        // Counting the 2 test posts
+        let numOfPosts = 2;
         let container = document.getElementsByClassName("flex-container row");
-        for (let i = 0; i < 6; i++) {
+        let fragment = document.createDocumentFragment();
+        for (let i = 0; i < 13; i++) {
             let post = new IndexPost(data[i]["id"], data[i]["title"], data[i]["url"]);
             let htmlPost = post.createHtmlPost();
-            htmlPost.addEventListener("click", () => post.removeSelf(numOfPosts));
+            htmlPost.addEventListener("click", () => {
+                numOfPosts = post.removeSelf(numOfPosts);
+                setCounter(document.getElementById("counter"), numOfPosts);
+            });
 
-            container[0].appendChild(htmlPost);
+            fragment.appendChild(htmlPost);
             numOfPosts++;
         }
 
-        let counter = document.createElement("div");
-        counter.setAttribute("class", "flex-container column");
-        counter.innerHTML = "The number of posts in index is: " + numOfPosts;
+        container[0].appendChild(fragment);
 
         let footer = document.getElementsByTagName("footer");
-        footer[0].appendChild(counter);
+        createCounter(footer[0], numOfPosts);
     });
