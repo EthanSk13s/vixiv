@@ -205,6 +205,14 @@ nav {
   background-color: var(--secondary2);
 }
 
+.warn-box {
+  background-color: lightcoral;
+  border:  0.1em solid #ff0015;
+  border-radius: 0.2em;
+  padding: 0.5em 5em;
+  text-align: center
+}
+
 @media (max-width: 800px) {
   nav {
     flex-direction: column;
