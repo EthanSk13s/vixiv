@@ -14,7 +14,7 @@ class IndexPost {
         childContainer.setAttribute("class", "post-container row-md");
 
         let titleContainer = document.createElement("div");
-        titleContainer.setAttribute("class", "column-md");
+        titleContainer.setAttribute("class", "column-md title");
         titleContainer.innerHTML = this.title;
 
         let imageContainer = document.createElement("div");
@@ -29,7 +29,7 @@ class IndexPost {
 
         // for now, use id
         let userContainer = document.createElement("div");
-        userContainer.setAttribute("class", "column-md");
+        userContainer.setAttribute("class", "column-md title");
         userContainer.innerHTML = this.title;
 
         // Construct html
@@ -41,17 +41,35 @@ class IndexPost {
         childContainer.appendChild(userContainer);
 
         parentContainer.appendChild(childContainer);
+        parentContainer.style.opacity = "1";
 
         return parentContainer;
     }
 
     removeSelf(numOfPosts) {
         let self = document.getElementById(this.id);
-        self.parentElement.removeChild(self);
+        let calls = 0;
+        let id = setInterval(() => {
+            if (calls != 20) {
+                fadeOut(this.id);
+                calls++;
+            } else {
+                clearInterval(id);
+                self.parentElement.removeChild(self);
+            }
+        }, 5, this.id);
 
         numOfPosts--;
         console.log(numOfPosts);
         return numOfPosts;
+    }
+}
+
+function fadeOut(id) {
+    const self = document.getElementById(id);
+    if (Number(self.style.opacity) >= 0) {
+        let newOpacity = Number(self.style.opacity) - 0.05;
+        self.style.opacity = String(newOpacity);
     }
 }
 

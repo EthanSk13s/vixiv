@@ -97,6 +97,8 @@ body {
 
 .post-container {
   border-radius: 0.5em;
+  width: 400px;
+  height: 410px;
   background-color: var(--secondary);
   transition: all 0.3s ease-in-out;
 }
@@ -211,6 +213,14 @@ nav {
   border-radius: 0.2em;
   padding: 0.5em 5em;
   text-align: center
+}
+
+.title {
+  min-width: 0;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: center;
+  overflow: hidden
 }
 
 @media (max-width: 800px) {
