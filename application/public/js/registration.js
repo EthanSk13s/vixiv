@@ -87,12 +87,13 @@ function checkUser() {
 function checkForm(event) {
     let form = document.getElementById("main-form");
     let invalidBox = document.getElementById("invalidForm");
-    if (!validUser) {
+    if (!validUser || !validPass) {
         if (invalidBox == null) {
-            let invalidBox = createInvalidForm("Invalid input for user");
+            let invalidBox = createInvalidForm("Invalid values, check your name or password");
             form.before(invalidBox);
-            event.preventDefault();
         }
+
+        event.preventDefault();
     }
 }
 
