@@ -87,15 +87,16 @@ function setCounter(counter, newCount) {
 }
 
 const testPosts = "https://jsonplaceholder.typicode.com/albums/2/photos"
+const MAX_POSTS = 15;
 
-const testPostsJson = fetch(testPosts)
+fetch(testPosts)
     .then((response) => response.json())
     .then((data) => {
-        // Counting the 2 test posts
-        let numOfPosts = 2;
+        let numOfPosts = 0;
         let container = document.getElementsByClassName("flex-container row");
         let fragment = document.createDocumentFragment();
-        for (let i = 0; i < 13; i++) {
+
+        for (let i = 0; i < MAX_POSTS; i++) {
             let post = new IndexPost(data[i]["id"], data[i]["title"], data[i]["url"]);
             let htmlPost = post.createHtmlPost();
             htmlPost.addEventListener("click", () => {
