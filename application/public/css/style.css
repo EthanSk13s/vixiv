@@ -97,7 +97,7 @@ body {
 
 .post-container {
   border-radius: 0.5em;
-  width: 400px;
+  width: 450px;
   height: 410px;
   background-color: var(--secondary);
   transition: all 0.3s ease-in-out;
