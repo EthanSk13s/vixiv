@@ -8,6 +8,7 @@ const handlebars = require("express-handlebars");
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 const loginRouter = require("./routes/login");
+const registerRouter = require("./routes/register");
 
 const app = express();
 
@@ -37,7 +38,8 @@ app.use("/public", express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter); // route middleware from ./routes/index.js
 app.use("/users", usersRouter); // route middleware from ./routes/users.js
-app.use("/login", loginRouter)
+app.use("/login", loginRouter);
+app.use("/register", registerRouter);
 
 
 /**
