@@ -9,6 +9,7 @@ const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 const loginRouter = require("./routes/login");
 const registerRouter = require("./routes/register");
+const postImageRouter = require("./routes/post_image");
 
 const app = express();
 
@@ -40,6 +41,7 @@ app.use("/", indexRouter); // route middleware from ./routes/index.js
 app.use("/users", usersRouter); // route middleware from ./routes/users.js
 app.use("/login", loginRouter);
 app.use("/register", registerRouter);
+app.use("/post_image", postImageRouter);
 
 
 /**
