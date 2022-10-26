@@ -2,6 +2,7 @@ let validUser = false;
 let validPass = false;
 const validChar = /[a-zA-Z]/;
 const validSpecial = /\W/;
+const validInt = /[0-9]/;
 
 function createWarn(text, id) {
     let container = document.createElement("div");
@@ -29,6 +30,15 @@ function checkPass() {
 
     if (!validSpecial.exec(pass.value)) {
         warnString = "Password must have any of the following characters: /*-+!@#$^&~[]";
+        if (warn == null) {
+            let warn = createWarn(warnString, "passWarn");
+            pass.parentNode.appendChild(warn);
+            validPass = false;
+        } else {
+            warn.innerHTML = warnString;
+        }
+    } else if (!validInt.exec(pass.value)) {
+        warnString = "Password mush have at least 1 number";
         if (warn == null) {
             let warn = createWarn(warnString, "passWarn");
             pass.parentNode.appendChild(warn);
