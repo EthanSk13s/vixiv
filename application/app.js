@@ -5,6 +5,7 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const handlebars = require("express-handlebars");
+const history = require('connect-history-api-fallback');
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 const loginRouter = require("./routes/login");
@@ -12,6 +13,7 @@ const registerRouter = require("./routes/register");
 const postImageRouter = require("./routes/post_image");
 
 const app = express();
+const staticFileMiddleWare = express.static(path.join(__dirname, '/ui/dist'));
 
 app.engine(
   "hbs",
@@ -25,8 +27,16 @@ app.engine(
 );
 
 // view engine setup
+/*
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "hbs");
+*/
+app.use(staticFileMiddleWare);
+app.use(history({
+  disableDotRule: true,
+  verbose: true
+}));
+app.use(staticFileMiddleWare);
 
 
 app.use(logger("dev"));
@@ -37,11 +47,13 @@ app.use(cookieParser());
 app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use("/public", express.static(path.join(__dirname, "public")));
 
+/*
 app.use("/", indexRouter); // route middleware from ./routes/index.js
 app.use("/users", usersRouter); // route middleware from ./routes/users.js
 app.use("/login", loginRouter);
 app.use("/register", registerRouter);
 app.use("/post_image", postImageRouter);
+*/
 
 
 /**
