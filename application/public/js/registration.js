@@ -1,7 +1,11 @@
 let validUser = false;
 let validPass = false;
+let matchingPass = false;
+
 const validChar = /[a-zA-Z]/;
 const validSpecial = /\W/;
+const validInt = /[0-9]/;
+const hasUpper = /[A-Z]/;
 
 function createWarn(text, id) {
     let container = document.createElement("div");
@@ -36,6 +40,24 @@ function checkPass() {
         } else {
             warn.innerHTML = warnString;
         }
+    } else if (!validInt.exec(pass.value)) {
+        warnString = "Password mush have at least 1 number";
+        if (warn == null) {
+            let warn = createWarn(warnString, "passWarn");
+            pass.parentNode.appendChild(warn);
+            validPass = false;
+        } else {
+            warn.innerHTML = warnString;
+        }
+    } else if (!hasUpper.exec(pass.value)) {
+        warnString = "Password must have at least 1 uppercase letter";
+        if (warn == null) {
+            let warn = createWarn(warnString, "passWarn");
+            pass.parentNode.appendChild(warn);
+            validPass = false;
+        } else {
+            warn.innerHTML = warnString;
+        }
     } else if (pass.value.length < 8) {
         warnString = "Password must have at least 8 characters";
         if (warn == null) {
@@ -51,6 +73,30 @@ function checkPass() {
             validPass = true;
         }
     }
+}
+
+function matchPass() {
+    let pass = document.getElementsByName("password")[0];
+    let confirmPass = document.getElementById("confirmPass");
+    let warn = document.getElementById("confirmWarn");
+    let warnString;
+
+    if (pass.value != confirmPass.value) {
+        warnString = "Passwords do not match";
+        if (warn == null) {
+            let warn = createWarn(warnString, "confirmWarn");
+            confirmPass.parentNode.appendChild(warn);
+            matchingPass = false;
+        } else {
+            warn.innerHTML = warnString;
+        }
+    } else {
+        if (warn != null) {
+            confirmPass.parentNode.removeChild(warn);
+            validPass = true;
+        }
+    }
+
 }
 
 function checkUser() {
@@ -87,7 +133,7 @@ function checkUser() {
 function checkForm(event) {
     let form = document.getElementById("main-form");
     let invalidBox = document.getElementById("invalidForm");
-    if (!validUser || !validPass) {
+    if (!validUser || !validPass || !matchingPass) {
         if (invalidBox == null) {
             let invalidBox = createInvalidForm("Invalid values, check your name or password");
             form.before(invalidBox);
@@ -100,7 +146,9 @@ function checkForm(event) {
 let user = document.getElementsByName("user")[0];
 let pass = document.getElementsByName("password")[0];
 let form = document.getElementById("main-form");
+let confirmPass = document.getElementById("confirmPass");
 
 user.addEventListener("input", checkUser);
 form.addEventListener("submit", checkForm);
 pass.addEventListener("input", checkPass);
+confirmPass.addEventListener("input", matchPass);
