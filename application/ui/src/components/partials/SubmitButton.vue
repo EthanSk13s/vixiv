@@ -1,13 +1,13 @@
 <script lang="ts">
     export default {
         props: {
-            SubmitText: String
+            submitText: String
         }
     }
 </script>
 
 <template>
     <div class="column-md">
-        <input class="post-button" type="submit" v-bind:value=SubmitText>
+        <input class="post-button" type="submit" :value=submitText>
     </div>
 </template>
