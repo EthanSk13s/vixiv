@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "nodemon ./bin/www.ts",
-    "builddb": "node ./bin/dbloader",
+    "builddb": "ts-node ./bin/dbloader.ts",
     "grade": "npm i && node ./bin/dbloader  && nodemon ./bin/www"
   },
   "dependencies": {
