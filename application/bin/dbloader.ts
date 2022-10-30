@@ -43,7 +43,7 @@ async function makeUsersTable(connection: any) {
     // Users Table SQL Goes here
     `
     CREATE TABLE IF NOT EXISTS vixiv.users (
-      id INT NOT NULL,
+      id BIGINT NOT NULL,
       username VARCHAR(45) NULL,
       password CHAR(64) NULL,
       email VARCHAR(255) NULL,
@@ -64,9 +64,9 @@ async function makePostsTable(connection: any) {
   const [result, _] = await connection.query(
     // Posts Table SQL Goes here
     `CREATE TABLE IF NOT EXISTS vixiv.posts (
-      post_id INT NOT NULL,
+      post_id BIGINT NOT NULL,
       image VARCHAR(255) NULL,
-      author_id INT NULL,
+      author_id BIGINT NULL,
       PRIMARY KEY (post_id),
       INDEX user_id_idx (author_id ASC) VISIBLE,
       CONSTRAINT author_id
@@ -90,8 +90,8 @@ async function makeCommentsTable(connection: any) {
     // Comments Table SQL Goes here
     ` 
     CREATE TABLE IF NOT EXISTS vixiv.comments (
-      post_id INT NOT NULL,
-      user_id INT NULL,
+      post_id BIGINT NOT NULL,
+      user_id BIGINT NULL,
       content LONGTEXT NULL,
       INDEX user_id_idx (user_id ASC) VISIBLE,
       CONSTRAINT post_id
