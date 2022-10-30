@@ -7,7 +7,7 @@ const validSpecial = /\W/;
 const validInt = /[0-9]/;
 const hasUpper = /[A-Z]/;
 
-function createWarn(text, id) {
+function createWarn(text: string, id: string) {
     let container = document.createElement("div");
     container.setAttribute("class", "input-warn");
     container.setAttribute("id", id);
@@ -16,7 +16,7 @@ function createWarn(text, id) {
     return container;
 }
 
-function createInvalidForm(text) {
+function createInvalidForm(text: string) {
     let container = document.createElement("div");
     container.setAttribute("class", "column-md warn-box");
     container.setAttribute("id", "invalidForm");
@@ -27,7 +27,7 @@ function createInvalidForm(text) {
 }
 
 function checkPass() {
-    let pass = document.getElementsByName("password")[0];
+    let pass = document.getElementsByName("password")[0] as HTMLInputElement;
     let warn = document.getElementById("passWarn");
     let warnString;
 
@@ -35,7 +35,7 @@ function checkPass() {
         warnString = "Password must have any of the following characters: /*-+!@#$^&~[]";
         if (warn == null) {
             let warn = createWarn(warnString, "passWarn");
-            pass.parentNode.appendChild(warn);
+            pass.parentNode?.appendChild(warn);
             validPass = false;
         } else {
             warn.innerHTML = warnString;
@@ -44,7 +44,7 @@ function checkPass() {
         warnString = "Password mush have at least 1 number";
         if (warn == null) {
             let warn = createWarn(warnString, "passWarn");
-            pass.parentNode.appendChild(warn);
+            pass.parentNode?.appendChild(warn);
             validPass = false;
         } else {
             warn.innerHTML = warnString;
@@ -53,7 +53,7 @@ function checkPass() {
         warnString = "Password must have at least 1 uppercase letter";
         if (warn == null) {
             let warn = createWarn(warnString, "passWarn");
-            pass.parentNode.appendChild(warn);
+            pass.parentNode?.appendChild(warn);
             validPass = false;
         } else {
             warn.innerHTML = warnString;
@@ -62,22 +62,22 @@ function checkPass() {
         warnString = "Password must have at least 8 characters";
         if (warn == null) {
             let warn = createWarn(warnString, "passWarn");
-            pass.parentNode.appendChild(warn);
+            pass.parentNode?.appendChild(warn);
             validPass = false;
         } else {
             warn.innerHTML = warnString;
         }
     } else {
         if (warn != null) {
-            pass.parentNode.removeChild(warn);
+            pass.parentNode?.removeChild(warn);
             validPass = true;
         }
     }
 }
 
 function matchPass() {
-    let pass = document.getElementsByName("password")[0];
-    let confirmPass = document.getElementById("confirmPass");
+    let pass = document.getElementsByName("password")[0] as HTMLInputElement;
+    let confirmPass = document.getElementById("confirmPass") as HTMLInputElement;
     let warn = document.getElementById("confirmWarn");
     let warnString;
 
@@ -85,14 +85,14 @@ function matchPass() {
         warnString = "Passwords do not match";
         if (warn == null) {
             let warn = createWarn(warnString, "confirmWarn");
-            confirmPass.parentNode.appendChild(warn);
+            confirmPass.parentNode?.appendChild(warn);
             matchingPass = false;
         } else {
             warn.innerHTML = warnString;
         }
     } else {
         if (warn != null) {
-            confirmPass.parentNode.removeChild(warn);
+            confirmPass.parentNode?.removeChild(warn);
             validPass = true;
         }
     }
@@ -100,7 +100,7 @@ function matchPass() {
 }
 
 function checkUser() {
-    let user = document.getElementsByName("user")[0];
+    let user = document.getElementsByName("user")[0] as HTMLInputElement;
     let warn = document.getElementById("userWarn");
     let warnString = "";
 
@@ -108,7 +108,7 @@ function checkUser() {
         warnString = "Username must start with an alphabet";
         if (warn == null) {
             let warn = createWarn(warnString, "userWarn");
-            user.parentNode.appendChild(warn);
+            user.parentNode?.appendChild(warn);
             validUser = false;
         } else {
             warn.innerHTML = warnString;
@@ -117,38 +117,40 @@ function checkUser() {
         warnString = "Username must be more than 3 characters";
         if (warn == null) {
             let warn = createWarn(warnString, "userWarn");
-            user.parentNode.appendChild(warn);
+            user.parentNode?.appendChild(warn);
             validUser = false;
         } else {
             warn.innerHTML = warnString;
         }
     } else {
         if (warn != null) {
-            user.parentNode.removeChild(warn);
+            user.parentNode?.removeChild(warn);
             validUser = true;
         }
     }
 }
 
-function checkForm(event) {
+function checkForm(event: { preventDefault: () => void; }) {
     let form = document.getElementById("main-form");
     let invalidBox = document.getElementById("invalidForm");
     if (!validUser || !validPass || !matchingPass) {
         if (invalidBox == null) {
             let invalidBox = createInvalidForm("Invalid values, check your name or password");
-            form.before(invalidBox);
+            form?.before(invalidBox);
         }
 
         event.preventDefault();
     }
 }
 
-let user = document.getElementsByName("user")[0];
-let pass = document.getElementsByName("password")[0];
-let form = document.getElementById("main-form");
-let confirmPass = document.getElementById("confirmPass");
+export function setEvents() {
+    let user = document.getElementsByName("user")[0];
+    let pass = document.getElementsByName("password")[0];
+    let form = document.getElementById("main-form");
+    let confirmPass = document.getElementById("confirmPass");
 
-user.addEventListener("input", checkUser);
-form.addEventListener("submit", checkForm);
-pass.addEventListener("input", checkPass);
-confirmPass.addEventListener("input", matchPass);
+    user.addEventListener("input", checkUser);
+    form?.addEventListener("submit", checkForm);
+    pass.addEventListener("input", checkPass);
+    confirmPass?.addEventListener("input", matchPass);
+}
