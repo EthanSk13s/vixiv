@@ -8,6 +8,7 @@
     "grade": "npm i && node ./bin/dbloader  && nodemon ./bin/www"
   },
   "dependencies": {
+    "bcrypt": "^5.1.0",
     "colors": "^1.4.0",
     "connect-history-api-fallback": "^2.0.0",
     "cookie-parser": "~1.4.4",
@@ -20,6 +21,7 @@
     "serve-favicon": "^2.5.0"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
     "@types/express": "^4.17.14",
     "@types/node": "^18.11.5",
     "nodemon": "^2.0.9",
