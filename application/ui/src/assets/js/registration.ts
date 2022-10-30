@@ -81,7 +81,7 @@ function matchPass() {
     let warn = document.getElementById("confirmWarn");
     let warnString;
 
-    if (pass.value != confirmPass.value) {
+    if (pass.value.localeCompare(confirmPass.value) != 0) {
         warnString = "Passwords do not match";
         if (warn == null) {
             let warn = createWarn(warnString, "confirmWarn");
@@ -93,7 +93,7 @@ function matchPass() {
     } else {
         if (warn != null) {
             confirmPass.parentNode?.removeChild(warn);
-            validPass = true;
+            matchingPass = true;
         }
     }
 
@@ -125,8 +125,8 @@ function checkUser() {
     } else {
         if (warn != null) {
             user.parentNode?.removeChild(warn);
-            validUser = true;
         }
+        validUser = true;
     }
 }
 
