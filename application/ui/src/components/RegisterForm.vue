@@ -15,7 +15,7 @@ export default {
 <template>
     <section class="flex-container column">
         <h2>Registration</h2>
-        <form id="main-form">
+        <form id="main-form" action="/register/post" method="POST">
             <fieldset class="main-field">
                 <TextInput label-name="user" place-holder="Username"/>
                 <div class="column-md">

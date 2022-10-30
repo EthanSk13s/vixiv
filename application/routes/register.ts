@@ -1,10 +1,13 @@
-import {Request, Response, NextFunction, Router} from "express";
+import { Request, Response, NextFunction, Router } from "express";
 
 var router = Router();
 
-/* GET login page. */
-router.get('/', function(req: Request, res: Response, next: NextFunction) {
-  res.render('register');
-});
+router.post('/', function (req: Request, res: Response, next: NextFunction) {
+    console.log(req.body.user);
+    console.log(req.body.email);
+    console.log(req.body.password);
+
+    res.redirect('/login');
+})
 
 module.exports = router;
