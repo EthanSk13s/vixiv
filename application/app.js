@@ -50,10 +50,10 @@ app.use("/public", express.static(path.join(__dirname, "public")));
 /*
 app.use("/", indexRouter); // route middleware from ./routes/index.js
 app.use("/users", usersRouter); // route middleware from ./routes/users.js
-app.use("/login", loginRouter);
 app.use("/post_image", postImageRouter);
 */
 app.use("/register/post", registerRouter);
+app.use("/login/check", loginRouter);
 
 
 /**
