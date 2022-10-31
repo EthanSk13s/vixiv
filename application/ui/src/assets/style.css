@@ -191,7 +191,7 @@ nav {
 }
 
 .nav-link:hover {
-  background-color: var(--tertiary)
+  color: #efefefa2
 }
 
 .input-text:focus {
@@ -316,6 +316,11 @@ nav {
   border-radius: 0.2em;
   padding: 0.5em 5em;
   text-align: center
+}
+
+.nav-pfp {
+  height: 2em;
+  border-radius: 50%;
 }
 
 .title {
