@@ -1,6 +1,20 @@
 import * as mysql from "mysql2";
 import {USER, PASS} from "../config";
 
+export class UserSession {
+    userId: number;
+    expiration: Date;
+
+    constructor(userId: number, expiration: Date) {
+        this.userId = userId;
+        this.expiration = expiration;
+    }
+
+    isExpired() {
+        return this.expiration < (new Date());
+    }
+}
+
 function createConnection() {
     let conn = mysql.createConnection({
             host: "localhost",
@@ -15,3 +29,4 @@ function createConnection() {
 }
 
 export const db = createConnection();
+export var sessions: any = {};

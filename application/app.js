@@ -14,6 +14,7 @@ const postImageRouter = require("./routes/post_image");
 
 const app = express();
 const staticFileMiddleWare = express.static(path.join(__dirname, '/ui/dist'));
+const COOKIE_SECRET = "CooK!35AReC0Ol";
 
 app.engine(
   "hbs",
@@ -31,30 +32,30 @@ app.engine(
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "hbs");
 */
-app.use(staticFileMiddleWare);
-app.use(history({
-  disableDotRule: true,
-  verbose: true
-}));
-app.use(staticFileMiddleWare);
-
 
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+app.use(cookieParser(COOKIE_SECRET));
 
 app.use(favicon(__dirname + '/public/favicon.ico'));
-app.use("/public", express.static(path.join(__dirname, "public")));
 
 /*
-app.use("/", indexRouter); // route middleware from ./routes/index.js
 app.use("/users", usersRouter); // route middleware from ./routes/users.js
 app.use("/post_image", postImageRouter);
 */
+app.use("/test", indexRouter); // route middleware from ./routes/index.js
 app.use("/register/post", registerRouter);
 app.use("/login/check", loginRouter);
 
+app.use(history({
+  disableDotRule: true,
+  verbose: true,
+  htmlAcceptHeaders: ['text/html']
+}));
+
+app.use(staticFileMiddleWare);
+app.use("/public", express.static(path.join(__dirname, "public")));
 
 /**
  * Catch all route, if we get to here then the 
