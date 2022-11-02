@@ -20,7 +20,7 @@ export default {
             this.username = data.get("username")?.toString()!;
             this.password = data.get("password")?.toString()!;
 
-            this.$http.post("/login/check", this.$data)
+            this.$http.post("/api/login", this.$data)
                 .then((response) => {
                     let data = response.data;
                     if (data.valid) {

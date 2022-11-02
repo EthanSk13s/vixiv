@@ -45,8 +45,8 @@ app.use("/users", usersRouter); // route middleware from ./routes/users.js
 app.use("/post_image", postImageRouter);
 */
 app.use("/test", indexRouter); // route middleware from ./routes/index.js
-app.use("/register/post", registerRouter);
-app.use("/login/check", loginRouter);
+app.use("/api/register", registerRouter);
+app.use("/api/login", loginRouter);
 
 app.use(history({
   disableDotRule: true,
