@@ -20,13 +20,13 @@ export default {
             this.username = data.get("username")?.toString()!;
             this.password = data.get("password")?.toString()!;
 
-            fetch("/login/check", {method: "POST", headers: {'Content-Type': 'application/json'}, body: JSON.stringify(this.$data)})
-                .then((response) => response.json())
-                .then((data) => {
+            this.$http.post("/login/check", this.$data)
+                .then((response) => {
+                    let data = response.data;
                     if (data.valid) {
                         this.$router.push({'name': 'home'});
                     }
-                });
+                })
         }
     }
 }
