@@ -13,25 +13,8 @@ const registerRouter = require("./routes/register");
 const postImageRouter = require("./routes/post_image");
 
 const app = express();
-const staticFileMiddleWare = express.static(path.join(__dirname, '/ui/dist'));
+const staticFileMiddleWare = express.static(path.join(__dirname, '../ui/dist'));
 const COOKIE_SECRET = "CooK!35AReC0Ol";
-
-app.engine(
-  "hbs",
-  handlebars({
-    layoutsDir: path.join(__dirname, "views/layouts"), //where to look for layouts
-    partialsDir: path.join(__dirname, "views/partials"), // where to look for partials
-    extname: ".hbs", //expected file extension for handlebars files
-    defaultLayout: "layout", //default layout for app, general template for all pages in app
-    helpers: {}, //adding new helpers to handlebars for extra functionality
-  })
-);
-
-// view engine setup
-/*
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "hbs");
-*/
 
 app.use(logger("dev"));
 app.use(express.json());
