@@ -12,7 +12,7 @@ function genID() {
 }
 
 async function registerUser(username: string, email: string, pass: string) {
-    let hashedPass: string = bcrypt.hashSync(pass, SALT_ROUNDS);
+    let hashedPass: string = await bcrypt.hash(pass, SALT_ROUNDS);
     const conn = await db;
 
     await conn.query(

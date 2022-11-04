@@ -16,7 +16,7 @@ async function checkUser(username: string, pass: string) {
 
     if ((rows as RowDataPacket[]).length == 1) {
         console.log(rows[0].password);
-        matchPassResult = bcrypt.compareSync(pass, rows[0].password);
+        matchPassResult = await bcrypt.compare(pass, rows[0].password);
 
         return {result: matchPassResult, row: rows[0]};
     }
