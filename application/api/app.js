@@ -11,7 +11,6 @@ const usersRouter = require("./routes/users");
 const loginRouter = require("./routes/login");
 const registerRouter = require("./routes/register");
 const postImageRouter = require("./routes/post_image");
-const examplePostRouter = require("./routes/example_post");
 
 const app = express();
 const staticFileMiddleWare = express.static(path.join(__dirname, '../ui/dist'));
