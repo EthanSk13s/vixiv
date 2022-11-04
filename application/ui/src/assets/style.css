@@ -100,27 +100,26 @@ body {
   background-color: var(--secondary);
 }
 
-.post-flex.row-md {
-  flex-basis: 25%;
+.post-flex {
+  gap: 1.75em;
 }
 
 .post-container {
+  display: flex;
+  gap: 0.15em;
+  flex-direction: column;
   border-radius: 0.5em;
-  width: 450px;
-  height: 410px;
-  background-color: var(--secondary);
+  width: 180px;
+  height: 180px;
   transition: all 0.3s ease-in-out;
 }
 
 .thumbnail-container {
-  display: block;
-  align-items: center;
-  position: relative;
-  margin-left: auto;
-  margin-right: auto;
-  width: 350px;
-  height: 350px;
-  object-fit: scale-down
+  width: 180px;
+  height: 180px;
+  object-position: center;
+  border-radius: 0.6em;
+  object-fit: cover
 }
 
 .input-text {
@@ -211,7 +210,6 @@ nav {
 .post-container:hover {
   transform: scale(1.03);
   transform-origin: 0 0;
-  background-color: var(--secondary2);
 }
 
 .info-container {
@@ -306,10 +304,6 @@ nav {
   gap: 0.5em;
 }
 
-.test {
-  height: 200px;
-}
-
 .warn-box {
   background-color: lightcoral;
   border:  0.1em solid #ff0015;
@@ -327,8 +321,21 @@ nav {
   min-width: 0;
   white-space: nowrap;
   text-overflow: ellipsis;
-  text-align: center;
   overflow: hidden
+}
+
+.author-container {
+  gap: 0.4em;
+  display: flex;
+  flex-direction: row;
+}
+
+.author-pfp {
+  width: 20px;
+  height: 20px;
+  object-fit: fill;
+  align-self: center;
+  border-radius: 50%;
 }
 
 @media (max-width: 800px) {
