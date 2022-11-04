@@ -9,18 +9,4 @@ import Index from "../components/Index.vue"
 </template>
 
 <script lang="ts">
-import { fetchPosts } from "../assets/js/index.js"
-
-export default {
-    name: "posts",
-    data: () => ({
-        error: "",
-        messages: []
-    }),
-
-    mounted() {
-        fetchPosts();
-    },
-    methods: {}
-}
 </script>
