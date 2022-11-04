@@ -47,6 +47,14 @@ export default {
                     }
                 })
         }
+    },
+    beforeMount() {
+        if (!this.$cookies.get('login_token')) {
+            const user = userStore();
+            user.$reset();
+
+            localStorage.clear();
+        }
     }
 }
 </script>

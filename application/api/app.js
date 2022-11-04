@@ -11,6 +11,7 @@ const usersRouter = require("./routes/users");
 const loginRouter = require("./routes/login");
 const registerRouter = require("./routes/register");
 const postImageRouter = require("./routes/post_image");
+const connection = require("./routes/connection");
 
 const app = express();
 const staticFileMiddleWare = express.static(path.join(__dirname, '../ui/dist'));
@@ -22,6 +23,25 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser(COOKIE_SECRET));
 
 app.use(favicon(__dirname + '/public/favicon.ico'));
+
+/**
+ * Check for session cookies and handle them
+ */
+app.use((req, res, next) => {
+  const userCookie = req.signedCookies['login_token'];
+  const sessionCookie = connection.sessions[userCookie];
+
+  if (sessionCookie) {
+    if (sessionCookie.isExpired()) {
+      res.clearCookie('login_token');
+      delete connection.sessions[userCookie];
+    }
+  } else {
+    res.clearCookie('login_token');
+  }
+
+  next()
+})
 
 /*
 app.use("/users", usersRouter); // route middleware from ./routes/users.js
@@ -47,7 +67,6 @@ app.use("/public", express.static(path.join(__dirname, "public")));
 app.use((req,res,next) => {
   next(createError(404, `The route ${req.method} : ${req.url} does not exist.`));
 })
-  
 
 /**
  * Error Handler, used to render the error html file
