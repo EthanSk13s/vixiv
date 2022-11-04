@@ -35,17 +35,7 @@ if (localStorage.getItem('user')) {
 
 <script lang="ts">
 export default {
-    beforeMount() {
-        this.checkSession()
-    },
     methods: {
-        checkSession() {
-            console.log(this.$cookies.keys());
-            this.$http.get("/test")
-                .then((response) => {
-                    console.log(response.data);
-                })
-        },
         logout() {
             this.$http.get("/logout")
                 .then((response) => {
