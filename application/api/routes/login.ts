@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction, Router} from "express";
-import { RowDataPacket } from "mysql2";
+import { RowDataPacket } from "mysql2/promise";
 import * as bcrypt from "bcrypt";
 
 import { db, UserSession, sessions } from "./connection";
@@ -8,18 +8,18 @@ var router = Router();
 const COOKIE_EXPIRATION: number = 216000;
 
 /* GET login page. */
-function checkUser(username: string, pass: string, callback: Function) {
+async function checkUser(username: string, pass: string) {
     let matchPassResult: boolean = false;
-    db.query(`SELECT * FROM vixiv.users WHERE username=?`, [username], (err, result: RowDataPacket[], fields) => {
-        if (err) throw err;
+    const conn = await db;
+    const [rowsLike, fields] = await conn.query(`SELECT * FROM vixiv.users WHERE username=?`, [username]);
+    const rows: RowDataPacket[] = rowsLike as RowDataPacket[];
 
-        if (result.length == 1) {
-            console.log(result[0].password);
-            matchPassResult = bcrypt.compareSync(pass, result[0].password);
+    if ((rows as RowDataPacket[]).length == 1) {
+        console.log(rows[0].password);
+        matchPassResult = bcrypt.compareSync(pass, rows[0].password);
 
-            return callback(matchPassResult, result[0]);
-        }
-    });
+        return {result: matchPassResult, row: rows[0]};
+    }
 }
 
 function createUserSession(req: Request, res: Response, userId: number) {
@@ -36,14 +36,13 @@ function createUserSession(req: Request, res: Response, userId: number) {
 }
 
 router.post('/', function (req: Request, res: Response, next: NextFunction) {
-    checkUser(req.body.username, req.body.password, (result: boolean, data: RowDataPacket) => {
-        if (result) {
-            createUserSession(req, res, data.id);
-            console.log(sessions);
-        } else {
-            console.log(":(");
-        }
-    });
+    checkUser(req.body.username, req.body.password)
+        .then((data) => {
+            if (data?.result) {
+                createUserSession(req, res, data!.row.id);
+                console.log(sessions);
+            }
+        })
 });
 
 module.exports = router;

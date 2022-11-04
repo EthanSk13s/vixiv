@@ -11,10 +11,11 @@ function genID() {
     return Date.now() + ((Math.random()*100000).toFixed())
 }
 
-function registerUser(username: string, email: string, pass: string) {
+async function registerUser(username: string, email: string, pass: string) {
     let hashedPass: string = bcrypt.hashSync(pass, SALT_ROUNDS);
+    const conn = await db;
 
-    db.query(
+    await conn.query(
         `
         INSERT INTO users(id, username, password, email)
             VALUES(?, ?, ?, ?)
@@ -22,8 +23,8 @@ function registerUser(username: string, email: string, pass: string) {
     );
 }
 
-router.post('/', function (req: Request, res: Response, next: NextFunction) {
-    registerUser(req.body.user, req.body.email, req.body.password);
+router.post('/', async function (req: Request, res: Response, next: NextFunction) {
+    await registerUser(req.body.user, req.body.email, req.body.password);
 
     res.redirect('/login');
 })
