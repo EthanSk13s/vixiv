@@ -2,7 +2,16 @@
 import SubmitButton from './partials/SubmitButton.vue';
 import TextInput from './partials/TextInput.vue';
 
+import { userStore } from '@/stores/user';
+
 export default {
+    setup() {
+        const user = userStore();
+
+        return {
+            user
+        }
+    },
     data() {
         return {
             username: "",
@@ -24,6 +33,9 @@ export default {
                 .then((response) => {
                     let data = response.data;
                     if (data.valid) {
+                        this.user.$patch({name: this.username});
+
+                        localStorage.setItem('user', this.user.name);
                         this.$router.push({'name': 'home'});
                     }
                 })
