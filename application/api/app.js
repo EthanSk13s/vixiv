@@ -27,7 +27,7 @@ app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use("/users", usersRouter); // route middleware from ./routes/users.js
 app.use("/post_image", postImageRouter);
 */
-app.use("/test", indexRouter); // route middleware from ./routes/index.js
+app.use("/", indexRouter); // route middleware from ./routes/index.js
 app.use("/api/register", registerRouter);
 app.use("/api/login", loginRouter);
 

@@ -46,8 +46,4 @@ router.post('/', function (req: Request, res: Response, next: NextFunction) {
     });
 });
 
-router.get('/', function (req: Request, res: Response, next: NextFunction) {
-    res.render("login");
-});
-
 module.exports = router;
