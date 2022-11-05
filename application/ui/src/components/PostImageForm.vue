@@ -59,13 +59,13 @@ export default {
 <template>
     <section class="flex-container column">
         <h2>Post an Image</h2>
-        <form>
+        <form ref="form" action="/api/image" method="post" enctype="multipart/form-data">
             <fieldset class="main-field">
                 <div class="flex-container column">
                     <label for="file-upload" class="post-button">
                         Select image
                     </label>
-                    <input id="file-upload" type="file" accept="image/*" required />
+                    <input name="file-upload" id="file-upload" type="file" accept="image/*" required />
                 </div>
                 <TextInput label-name="imageTitle" place-holder="Title" />
                 <TextInput label-name="imageDesc" place-holder="Description" />

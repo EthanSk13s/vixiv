@@ -32,6 +32,10 @@ const router = createRouter({
       path: '/register',
       name: 'register',
       component: RegisterView
+    },
+    {
+      path: '/post/:id',
+      component: PostView
     }
   ]
 })
