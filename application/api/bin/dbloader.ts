@@ -63,18 +63,17 @@ async function makeUsersTable(connection: any) {
 async function makePostsTable(connection: any) {
   const [result, _] = await connection.query(
     // Posts Table SQL Goes here
-    `CREATE TABLE IF NOT EXISTS vixiv.posts (
-      post_id BIGINT NOT NULL,
-      image VARCHAR(255) NULL,
-      author_id BIGINT NULL,
+    `CREATE TABLE posts (
+      post_id bigint NOT NULL,
+      image varchar(255) DEFAULT NULL,
+      author_id bigint DEFAULT NULL,
+      post_upload datetime DEFAULT NULL,
+      description longtext,
+      title longtext,
       PRIMARY KEY (post_id),
-      INDEX user_id_idx (author_id ASC) VISIBLE,
-      CONSTRAINT author_id
-        FOREIGN KEY (author_id)
-        REFERENCES vixiv.users (id)
-        ON DELETE NO ACTION
-        ON UPDATE NO ACTION)
-      ENGINE = InnoDB
+      KEY user_id_idx (author_id),
+      CONSTRAINT author_id FOREIGN KEY (author_id) REFERENCES users (id)
+    ) ENGINE=InnoDB;
     `
   );
   if (result && result.warningStatus > 0) {
