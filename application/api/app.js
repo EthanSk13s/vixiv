@@ -23,6 +23,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser(COOKIE_SECRET));
 
 app.use(favicon(__dirname + '/public/favicon.ico'));
+app.use('/public', express.static(path.join(__dirname, "public")));
 
 /**
  * Check for session cookies and handle them
@@ -45,11 +46,11 @@ app.use((req, res, next) => {
 
 /*
 app.use("/users", usersRouter); // route middleware from ./routes/users.js
-app.use("/post_image", postImageRouter);
 */
 app.use("/", indexRouter); // route middleware from ./routes/index.js
 app.use("/api/register", registerRouter);
 app.use("/api/login", loginRouter);
+app.use("/api/image", postImageRouter);
 
 app.use(history({
   disableDotRule: true,
@@ -58,7 +59,6 @@ app.use(history({
 }));
 
 app.use(staticFileMiddleWare);
-app.use("/public", express.static(path.join(__dirname, "public")));
 
 /**
  * Catch all route, if we get to here then the 

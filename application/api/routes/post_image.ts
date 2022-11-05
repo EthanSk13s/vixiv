@@ -1,10 +1,78 @@
-import {Request, Response, NextFunction, Router} from "express";
+import { Request, Response, NextFunction, Router } from "express";
+import multer, { diskStorage } from 'multer';
+import { RowDataPacket } from "mysql2";
+
+import path from "path";
+
+import { genID } from "../helpers/id-gen";
+import { db, sessions } from "./connection";
 
 var router = Router();
 
-/* GET login page. */
-router.get('/', function(req: Request, res: Response, next: NextFunction) {
-  res.render('post_image');
+// https://github.com/expressjs/multer/issues/439#issuecomment-559698822 file extension mapping
+const extensionMatch = /\.+[\S]+$/;
+const storage = diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, path.join(__dirname, '../public/storage/images'))
+    },
+    filename: (req, file, cb) => {
+        const { originalname } = file;
+
+        const fileExtension = (originalname.match(extensionMatch) || [])[0];
+        cb(null, `${genID()}${fileExtension}`);
+    }
+})
+const upload = multer({ storage: storage })
+
+async function createPost(postId: string, userId: string, title: string, description: string) {
+    const conn = await db;
+    const now = new Date();
+
+    await conn.query(
+        `
+        INSERT INTO posts(post_id, author_id, post_upload, title, description)
+            VALUES(?, ?, ?, ?, ?)
+        `, [postId, userId, now, title, description]
+    );
+}
+
+async function getPost(postId: string) {
+    const conn = await db;
+
+    let [rowsLike] = await conn.query(
+        `
+        SELECT * FROM vixiv.posts 
+            INNER JOIN users ON posts.author_id = users.id 
+            WHERE post_id=?;
+        `, [postId]
+    );
+    const rows: RowDataPacket[] = rowsLike as RowDataPacket[];
+    let data = rows[0] as RowDataPacket;
+
+    console.log(data.title);
+    let post = {
+        postId: data.post_id,
+        title: data.title,
+        description: data.description,
+        postUpload: data.post_upload,
+        authorName: data.username
+    }
+
+    return post;
+}
+
+router.post('/', upload.single('file-upload'),  async (req: Request, res: Response, next: NextFunction) => {
+    const requestCookie = req.signedCookies['login_token'];
+    const userId = sessions[requestCookie].userId;
+    const postId = req.file?.filename.replace(extensionMatch, '');
+
+    await createPost(postId!, userId, req.body.imageTitle, req.body.imageDesc);
+    res.sendStatus(200);
 });
+
+router.get('/posts/:id', async (req: Request, res: Response, next: NextFunction) => {
+    let post = await getPost(req.params.id);
+    return res.send({post});
+})
 
 module.exports = router;
