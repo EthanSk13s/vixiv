@@ -173,6 +173,11 @@ a {
   color: #00B7FF;
 }
 
+a.no-deco {
+  text-decoration: none;
+  color: #EFEFEF
+}
+
 a.nav-link {
   text-decoration: none;
   padding: 1em 1.14em;
