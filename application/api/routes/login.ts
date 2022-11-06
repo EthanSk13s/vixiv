@@ -15,7 +15,6 @@ async function checkUser(username: string, pass: string) {
     const rows: RowDataPacket[] = rowsLike as RowDataPacket[];
 
     if ((rows as RowDataPacket[]).length == 1) {
-        console.log(rows[0].password);
         matchPassResult = await bcrypt.compare(pass, rows[0].password);
 
         return {result: matchPassResult, row: rows[0]};
@@ -40,7 +39,6 @@ router.post('/', function (req: Request, res: Response, next: NextFunction) {
         .then((data) => {
             if (data?.result) {
                 createUserSession(req, res, data!.row.id);
-                console.log(sessions);
             }
         })
 });

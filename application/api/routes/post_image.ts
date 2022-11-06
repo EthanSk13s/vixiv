@@ -50,7 +50,6 @@ async function getPost(postId: string) {
     const rows: RowDataPacket[] = rowsLike as RowDataPacket[];
     let data = rows[0] as RowDataPacket;
 
-    console.log(data.title);
     let post = {
         postId: data.post_id,
         title: data.title,
@@ -87,7 +86,6 @@ router.get('/posts', async (req: Request, res: Response, next: NextFunction) => 
         `
     )
     const rows: RowDataPacket[] = rowsLike as RowDataPacket[];
-    console.log(rows);
     let posts: any[] = [];
 
     rows.forEach((data) => {
