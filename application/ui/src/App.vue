@@ -17,9 +17,8 @@ if (localStorage.getItem('user')) {
     <header>
         <nav>
             <RouterLink to="" class="nav-content nav-link nav-title"><b>Some Image Viewer</b></RouterLink>
-            <RouterLink to="/" class="nav-link" href="/">Home</RouterLink>
-            <RouterLink to="/viewpost" class="nav-link">View an Image</RouterLink>
-            <RouterLink to="/post_image" class="nav-link">Post an Image</RouterLink>
+            <RouterLink to="/" class="nav-link align-right" href="/">Home</RouterLink>
+            <RouterLink v-if="name" to="/post_image" class="nav-link">Post an Image</RouterLink>
             <RouterLink v-if="name" to="/login" class="nav-link">{{ name }}</RouterLink>
             <RouterLink v-else to="/login" class="nav-link">Login</RouterLink>
             <RouterLink v-if="name" @click="logout()" to="/" class="nav-link">Logout</RouterLink>

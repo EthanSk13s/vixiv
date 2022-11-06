@@ -14,11 +14,6 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/viewpost',
-      name: 'viewpost',
-      component: PostView
-    },
-    {
       path: '/post_image',
       name: 'postimage',
       component: PostImageView
