@@ -8,7 +8,7 @@ export default {
             title: "",
             description: "",
             authorName: "",
-            postUpload: null,
+            postUpload: new Date(),
             path: ""
         }
     },
@@ -20,7 +20,7 @@ export default {
                     this.title = data.title;
                     this.description = data.description;
                     this.authorName = data.authorName;
-                    this.postUpload = data.postUpload;
+                    this.postUpload = new Date(data.postUpload);
                     this.path = `/public/storage/images/${id}.png`
                 })
         }
