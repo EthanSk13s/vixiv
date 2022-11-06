@@ -67,7 +67,7 @@ router.post('/', upload.single('file-upload'),  async (req: Request, res: Respon
     const postId = req.file?.filename.replace(extensionMatch, '');
 
     await createPost(postId!, userId, req.body.imageTitle, req.body.imageDesc);
-    res.sendStatus(200);
+    res.redirect(`/post/${postId}`);
 });
 
 router.get('/posts/:id', async (req: Request, res: Response, next: NextFunction) => {
