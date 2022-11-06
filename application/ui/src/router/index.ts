@@ -16,7 +16,13 @@ const router = createRouter({
     {
       path: '/post_image',
       name: 'postimage',
-      component: PostImageView
+      component: PostImageView,
+      // TODO: Pretty rudimentary, should add a check server-side too.
+      beforeEnter: (to, from) => {
+        if (!localStorage.getItem('user')) {
+          router.push('login');
+        }
+      }
     },
     {
       path: '/login',
