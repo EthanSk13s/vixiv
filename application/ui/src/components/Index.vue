@@ -1,11 +1,39 @@
 <script lang="ts">
 import InfoContainer from '@/components/partials/InfoContainer.vue';
+import { stringifyQuery } from 'vue-router';
 import ThumbnailPost from './partials/ThumbnailPost.vue';
 
 export default {
+    data() {
+        return {
+            latestPosts: [] as { title: any; authorName: any; path: string; postPath: string }[]
+        }
+    },
     components: {
         InfoContainer,
         ThumbnailPost
+    },
+    methods: {
+        getLatestPosts() {
+            this.$http.get('/api/image/posts/')
+                .then((response) => {
+                    let posts: { title: any; authorName: any; path: string; postPath: string }[] = []
+                    response.data.data.forEach((element: any) => {
+                        let post = {
+                            title: element.title,
+                            authorName: element.authorName,
+                            path: `/public/storage/images/${element.postId}.png`,
+                            postPath: `/post/${element.postId}`
+                        }
+
+                        posts.push(post);
+                    });
+                    this.latestPosts = posts;
+                })
+        }
+    },
+    mounted() {
+        this.getLatestPosts()
     }
 }
 </script>
@@ -19,26 +47,12 @@ export default {
                     <h2>Latest Posts</h2>
                 </div>
                 <div class="flex-container row post-flex">
-                    <ThumbnailPost author="XD" authorPfp="https://theater.miriondb.com/card_bg/029umi0314_0.png" 
-                        title="umimi" image="https://theater.miriondb.com/card_bg/029umi0314_0.png"/>
-                    <ThumbnailPost author="XD" authorPfp="https://theater.miriondb.com/card_bg/029umi0314_0.png" 
-                        title="umimi" image="https://theater.miriondb.com/card_bg/029umi0314_0.png"/>
-                    <ThumbnailPost author="XD" authorPfp="https://theater.miriondb.com/card_bg/029umi0314_0.png" 
-                        title="umimi" image="https://theater.miriondb.com/card_bg/029umi0314_0.png"/>
-                    <ThumbnailPost author="XD" authorPfp="https://theater.miriondb.com/card_bg/029umi0314_0.png" 
-                        title="umimi" image="https://theater.miriondb.com/card_bg/029umi0314_0.png"/>
-                    <ThumbnailPost author="XD" authorPfp="https://theater.miriondb.com/card_bg/029umi0314_0.png" 
-                        title="umimi" image="https://theater.miriondb.com/card_bg/029umi0314_0.png"/>
-                    <ThumbnailPost author="XD" authorPfp="https://theater.miriondb.com/card_bg/029umi0314_0.png" 
-                        title="umimi" image="https://theater.miriondb.com/card_bg/029umi0314_0.png"/>
-                    <ThumbnailPost author="XD" authorPfp="https://theater.miriondb.com/card_bg/029umi0314_0.png" 
-                        title="umimi" image="https://theater.miriondb.com/card_bg/029umi0314_0.png"/>
-                    <ThumbnailPost author="XD" authorPfp="https://theater.miriondb.com/card_bg/029umi0314_0.png" 
-                        title="umimi" image="https://theater.miriondb.com/card_bg/029umi0314_0.png"/>
-                    <ThumbnailPost author="XD" authorPfp="https://theater.miriondb.com/card_bg/029umi0314_0.png" 
-                        title="umimi" image="https://theater.miriondb.com/card_bg/029umi0314_0.png"/>
-                    <ThumbnailPost author="XD" authorPfp="https://theater.miriondb.com/card_bg/029umi0314_0.png" 
-                        title="umimi" image="https://theater.miriondb.com/card_bg/029umi0314_0.png"/>
+                    <ThumbnailPost v-for="post in latestPosts" 
+                        :author="post.authorName"
+                        authorPfp="https://theater.miriondb.com/card_bg/029umi0314_0.png"
+                        :title="post.title" 
+                        :image="post.path"
+                        :postPath="post.postPath"/>
                 </div>
                 <div>
                     <h2>Your Posts</h2>
