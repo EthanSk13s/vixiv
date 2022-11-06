@@ -1,6 +1,7 @@
 <script lang="ts">
 import Comment from "./partials/Comment.vue"
 import InfoContainer from "./partials/InfoContainer.vue";
+import TextAreaVue from "./partials/TextArea.vue";
 
 export default {
     data() {
@@ -27,7 +28,8 @@ export default {
     },
     components: {
         Comment,
-        InfoContainer
+        InfoContainer,
+        TextAreaVue
     },
     mounted() {
         this.fetchPost(String(this.$route.params.id!));
@@ -39,9 +41,7 @@ export default {
     <div class="flex-container row">
         <main class="main-container">
             <section class="img-container">
-                <img class="img-container"
-                    :src="path"
-                    alt="Generic Art">
+                <img class="img-container" :src="path" alt="Generic Art">
             </section>
             <div class="desc-container">
                 <section class="row-md">
@@ -54,6 +54,12 @@ export default {
             <div class="comments-container">
                 <div>
                     <h3>Comments</h3>
+                </div>
+                <div class="comment-parent">
+                    <div class="comment-pfp">
+                        <img class="comment-pfp" src="https://theater.miriondb.com/icons/017kth0343_0.png" alt="pfp">
+                    </div>
+                    <TextAreaVue placeholder="Post a comment..."/>
                 </div>
                 <Comment user-name="Me" profile-pic="https://theater.miriondb.com/icons/017kth0343_0.png"
                     comment-content="Very Cool" date="Tue, 25 Oct 2022 20:12:50" />

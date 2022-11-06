@@ -339,6 +339,31 @@ input[type="file"] {
   display: none;
 }
 
+.comment-parent {
+  display: flex;
+  padding-bottom: 0.4em;
+  gap: 0.8em
+}
+
+.comment-input-container {
+  display: flex;
+  min-height: 1.3em;
+  flex-basis: 80%;
+  align-self: center;
+}
+
+.comment-input {
+  font: var(--default-font);
+  font-size: 0.95rem;
+  padding: 0.5em;
+  flex: 1 1 auto;
+  resize: none;
+  background-color: var(--tertiary);
+  color: #EFEFEF;
+  border-color: var(--primary);
+  border-radius: 0.2em
+}
+
 .custom-file-upload {
   border: 1px solid #ccc;
   padding: 6px 12px;
