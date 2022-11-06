@@ -22,7 +22,8 @@ async function createConnection() {
             user: USER, //Your DB username
             //TODO make sure to change to the correct password for your user.
             password: PASS, //Your DB password
-            database: "vixiv"
+            database: "vixiv",
+            supportBigNumbers: true
     })
 
     return conn;
