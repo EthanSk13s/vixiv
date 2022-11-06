@@ -358,8 +358,7 @@ input[type="file"] {
 }
 
 @media (min-width: 801px) {
-  nav > :nth-child(4) {
+  .nav-link.align-right {
     margin-right: auto;
   }
-  
 }
