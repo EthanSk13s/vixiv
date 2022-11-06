@@ -3,6 +3,7 @@ import multer, { diskStorage } from 'multer';
 import { RowDataPacket } from "mysql2";
 
 import path from "path";
+import { json } from "stream/consumers";
 
 import { genID } from "../helpers/id-gen";
 import { db, sessions } from "./connection";
@@ -73,6 +74,35 @@ router.post('/', upload.single('file-upload'),  async (req: Request, res: Respon
 router.get('/posts/:id', async (req: Request, res: Response, next: NextFunction) => {
     let post = await getPost(req.params.id);
     return res.send({post});
+})
+
+router.get('/posts', async (req: Request, res: Response, next: NextFunction) => {
+    const conn = await db;
+    
+    let [rowsLike] = await conn.query(
+        `
+        SELECT * FROM vixiv.posts
+            INNER JOIN users ON posts.author_id = users.id 
+            ORDER BY post_upload DESC LIMIT 15;
+        `
+    )
+    const rows: RowDataPacket[] = rowsLike as RowDataPacket[];
+    console.log(rows);
+    let posts: any[] = [];
+
+    rows.forEach((data) => {
+        let post = {
+            postId: data.post_id,
+            title: data.title,
+            authorName: data.username
+        }
+
+        posts.push(post);
+    })
+
+    let response = JSON.stringify({data: posts});
+
+    return res.send(response)
 })
 
 module.exports = router;
