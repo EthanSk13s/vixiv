@@ -77,14 +77,20 @@ router.get('/posts/:id', async (req: Request, res: Response, next: NextFunction)
 
 router.get('/posts', async (req: Request, res: Response, next: NextFunction) => {
     const conn = await db;
-    
-    let [rowsLike] = await conn.query(
-        `
-        SELECT * FROM vixiv.posts
-            INNER JOIN users ON posts.author_id = users.id 
-            ORDER BY post_upload DESC LIMIT 15;
-        `
-    )
+    const query = req.query;
+    let values = [];
+    let sqlQuery = `SELECT * FROM vixiv.posts INNER JOIN users ON posts.author_id = users.id `;
+
+    if (query.user) {
+        values.push(query.user);
+        sqlQuery += `WHERE author_id=? `;
+    }
+
+    if (query.numOfPosts) {
+        values.push(Number(query.numOfPosts));
+        sqlQuery += `ORDER BY post_upload DESC LIMIT ?;`
+    }
+    let [rowsLike] = await conn.query(sqlQuery, values);
     const rows: RowDataPacket[] = rowsLike as RowDataPacket[];
     let posts: any[] = [];
 
@@ -98,9 +104,7 @@ router.get('/posts', async (req: Request, res: Response, next: NextFunction) => 
         posts.push(post);
     })
 
-    let response = JSON.stringify({data: posts});
-
-    return res.send(response)
+    return res.json(posts)
 })
 
 module.exports = router;
