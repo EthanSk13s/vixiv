@@ -1,12 +1,12 @@
 <script lang="ts">
 export default {
     props: {
-        placeholder: String
+        placeholder: String,
+        id: String
     },
     methods: {
         OnInput(e: Event) {
             let target = e.currentTarget! as HTMLInputElement;
-            console.log('yo');
             target.style.height = '0';
             target.style.height = (target.scrollHeight) + "px";
         }
@@ -21,6 +21,6 @@ export default {
 
 <template>
     <div class="comment-input-container">
-        <textarea ref="textInput" class="comment-input" name="" id="" rows="1" maxlength="140" :placeholder="placeholder"></textarea>
+        <textarea ref="textInput" class="comment-input" name="" :id=id rows="1" maxlength="140" :placeholder="placeholder"></textarea>
     </div>
 </template>
