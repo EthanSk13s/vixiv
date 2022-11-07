@@ -10,7 +10,8 @@ export default {
             description: "",
             authorName: "",
             postUpload: new Date(),
-            path: ""
+            path: "",
+            comments: [] as { userName: any; date: any; content: string; }[],
         }
     },
     methods: {
@@ -24,6 +25,23 @@ export default {
                     this.postUpload = new Date(data.postUpload);
                     this.path = `/public/storage/images/${id}.png`
                 })
+        },
+        createComment(e: KeyboardEvent) {
+            if(e.key === 'Enter' && !e.shiftKey) {
+                let currentTarget = e.currentTarget as HTMLInputElement;
+                let value = currentTarget.value;
+
+                let comment = {
+                    userName: localStorage.getItem('user'),
+                    date: new Date(),
+                    content: value
+                }
+
+                this.comments.unshift(comment);
+
+                e.preventDefault();
+                
+            }
         }
     },
     components: {
@@ -33,6 +51,10 @@ export default {
     },
     mounted() {
         this.fetchPost(String(this.$route.params.id!));
+        
+        let commentInput = document.getElementById('commentInput');
+
+        commentInput?.addEventListener('keypress', this.createComment);
     }
 }
 </script>
@@ -59,8 +81,13 @@ export default {
                     <div class="comment-pfp">
                         <img class="comment-pfp" src="https://theater.miriondb.com/icons/017kth0343_0.png" alt="pfp">
                     </div>
-                    <TextAreaVue placeholder="Post a comment..."/>
+                    <TextAreaVue placeholder="Post a comment..." id="commentInput"/>
                 </div>
+                <Comment v-for="comment in comments"
+                    :user-name="comment.userName"
+                    profile-pic="https://theater.miriondb.com/icons/017kth0343_0.png"
+                    :comment-content="comment.content"
+                    :date="comment.date"/>
                 <Comment user-name="Me" profile-pic="https://theater.miriondb.com/icons/017kth0343_0.png"
                     comment-content="Very Cool" date="Tue, 25 Oct 2022 20:12:50" />
                 <Comment user-name="You" profile-pic="https://theater.miriondb.com/icons/017kth0343_0.png"
