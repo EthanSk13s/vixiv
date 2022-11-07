@@ -34,8 +34,10 @@ export default {
                     let data = response.data;
                     if (data.valid) {
                         this.user.$patch({name: this.username});
+                        this.user.$patch({userId: data.userId});
 
                         localStorage.setItem('user', this.user.name);
+                        localStorage.setItem('id', String(this.user.userId));
                         this.$router.push({'name': 'home'});
                     }
                 })

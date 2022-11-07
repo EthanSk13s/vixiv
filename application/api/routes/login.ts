@@ -30,7 +30,7 @@ function createUserSession(req: Request, res: Response, userId: number) {
 
     sessions[randId] = session;
     res.cookie('login_token', randId, {signed: true, expires: expiresAt, sameSite: "lax"})
-    res.json({valid: true});
+    res.json({valid: true, userId: userId});
     res.end();
 }
 
