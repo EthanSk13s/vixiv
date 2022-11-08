@@ -9,7 +9,7 @@ var router = Router();
 
 async function registerUser(username: string, email: string, pass: string) {
     let hashedPass: string = await bcrypt.hash(pass, SALT_ROUNDS);
-    const conn = await db;
+    const conn = db.promise();
 
     await conn.query(
         `

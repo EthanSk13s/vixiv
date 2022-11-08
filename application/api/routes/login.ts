@@ -10,7 +10,8 @@ const COOKIE_EXPIRATION: number = 216000;
 /* GET login page. */
 async function checkUser(username: string, pass: string) {
     let matchPassResult: boolean = false;
-    const conn = await db;
+
+    const conn = db.promise();
     const [rowsLike, fields] = await conn.query(`SELECT * FROM vixiv.users WHERE username=?`, [username]);
     const rows: RowDataPacket[] = rowsLike as RowDataPacket[];
 

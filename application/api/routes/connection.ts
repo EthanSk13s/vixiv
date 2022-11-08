@@ -1,4 +1,4 @@
-import * as mysql from "mysql2/promise";
+import mysql2 from "mysql2";
 import {USER, PASS} from "../config";
 
 export class UserSession {
@@ -15,8 +15,9 @@ export class UserSession {
     }
 }
 
-async function createConnection() {
-    let conn = await mysql.createConnection({
+function createConnection() {
+
+    let conn: mysql2.Pool = mysql2.createPool({
             host: "localhost",
             //TODO make sure to change to the user you want to use
             user: USER, //Your DB username

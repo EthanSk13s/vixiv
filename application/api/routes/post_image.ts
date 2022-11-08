@@ -3,7 +3,6 @@ import multer, { diskStorage } from 'multer';
 import { RowDataPacket } from "mysql2";
 
 import path from "path";
-import { json } from "stream/consumers";
 
 import { genID } from "../helpers/id-gen";
 import { db, sessions } from "./connection";
@@ -26,7 +25,7 @@ const storage = diskStorage({
 const upload = multer({ storage: storage })
 
 async function createPost(postId: string, userId: string, title: string, description: string) {
-    const conn = await db;
+    const conn = db.promise()
     const now = new Date();
 
     await conn.query(
@@ -38,7 +37,7 @@ async function createPost(postId: string, userId: string, title: string, descrip
 }
 
 async function getPost(postId: string) {
-    const conn = await db;
+    const conn = db.promise()
 
     let [rowsLike] = await conn.query(
         `
@@ -76,7 +75,7 @@ router.get('/posts/:id', async (req: Request, res: Response, next: NextFunction)
 })
 
 router.get('/posts', async (req: Request, res: Response, next: NextFunction) => {
-    const conn = await db;
+    const conn = db.promise();
     const query = req.query;
     let values = [];
     let sqlQuery = `SELECT * FROM vixiv.posts INNER JOIN users ON posts.author_id = users.id `;
@@ -90,7 +89,7 @@ router.get('/posts', async (req: Request, res: Response, next: NextFunction) => 
         values.push(Number(query.limit));
         sqlQuery += `ORDER BY post_upload DESC LIMIT ?;`
     }
-    console.log(sqlQuery);
+
     let [rowsLike] = await conn.query(sqlQuery, values);
     const rows: RowDataPacket[] = rowsLike as RowDataPacket[];
     let posts: any[] = [];
