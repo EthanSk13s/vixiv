@@ -27,21 +27,45 @@ export default {
                 })
         },
         createComment(e: KeyboardEvent) {
-            if(e.key === 'Enter' && !e.shiftKey) {
+            if (e.key === 'Enter' && !e.shiftKey) {
                 let currentTarget = e.currentTarget as HTMLInputElement;
                 let value = currentTarget.value;
+                let postId = this.$route.params.id!;
+                let userId = localStorage.getItem('id');
 
                 let comment = {
+                    postId: postId,
+                    userId: userId,
                     userName: localStorage.getItem('user'),
                     date: new Date(),
                     content: value
                 }
 
+                this.$http.post(`/api/image/posts/${this.$route.params.id!}/comments`, comment)
+                    .then((response) => {
+                        console.log(':)');
+                    })
+
                 this.comments.unshift(comment);
 
                 e.preventDefault();
-                
+
             }
+        },
+        fetchComments(id: string) {
+            this.$http.get(`/api/image/posts/${id}/comments`)
+                .then((response) => {
+                    response.data.forEach((data: any) => {
+                        let comment = {
+                            userName: data.userName,
+                            date: new Date(data.date),
+                            content: data.content
+                        }
+
+
+                        this.comments.push(comment);
+                    })
+                })
         }
     },
     components: {
@@ -51,7 +75,8 @@ export default {
     },
     mounted() {
         this.fetchPost(String(this.$route.params.id!));
-        
+        this.fetchComments(String(this.$route.params.id!));
+
         let commentInput = document.getElementById('commentInput');
 
         commentInput?.addEventListener('keypress', this.createComment);
@@ -81,19 +106,11 @@ export default {
                     <div class="comment-pfp">
                         <img class="comment-pfp" src="https://theater.miriondb.com/icons/017kth0343_0.png" alt="pfp">
                     </div>
-                    <TextAreaVue placeholder="Post a comment..." id="commentInput"/>
+                    <TextAreaVue placeholder="Post a comment..." id="commentInput" />
                 </div>
-                <Comment v-for="comment in comments"
-                    :user-name="comment.userName"
-                    profile-pic="https://theater.miriondb.com/icons/017kth0343_0.png"
-                    :comment-content="comment.content"
-                    :date="comment.date"/>
-                <Comment user-name="Me" profile-pic="https://theater.miriondb.com/icons/017kth0343_0.png"
-                    comment-content="Very Cool" date="Tue, 25 Oct 2022 20:12:50" />
-                <Comment user-name="You" profile-pic="https://theater.miriondb.com/icons/017kth0343_0.png"
-                    comment-content="Awesome" date="Tue, 25 Oct 2022 20:12:45" />
-                <Comment user-name="Them" profile-pic="https://theater.miriondb.com/icons/017kth0343_0.png"
-                    comment-content="Bad >:(" date="Tue, 25 Oct 2022 20:12:30" />
+                <Comment v-for="comment in comments" :user-name="comment.userName"
+                    profile-pic="https://theater.miriondb.com/icons/017kth0343_0.png" :comment-content="comment.content"
+                    :date="comment.date" />
             </div>
         </main>
         <InfoContainer :user-name=$data.authorName profile-pic="https://theater.miriondb.com/icons/017kth0343_0.png" />

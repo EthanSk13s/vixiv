@@ -107,4 +107,46 @@ router.get('/posts', async (req: Request, res: Response, next: NextFunction) => 
     return res.json(posts)
 })
 
+async function postComment(postId: number, userId: number, date: Date, content: string) {
+    const conn = db.promise();
+
+    let sqlQuery = 'INSERT INTO comments(post_id, user_id, comment_date, content) VALUES(?, ?, ?, ?);'
+
+    await conn.query(sqlQuery, [postId, userId, date ,content]);
+}
+
+async function getComments(postId: string) {
+    const conn = db.promise();
+
+    let sqlQuery = `SELECT * FROM comments INNER JOIN users ON comments.user_id=users.id WHERE post_id=? ORDER BY comment_date DESC;`
+
+    let [rowsLike] = await conn.query(sqlQuery, [postId]);
+    const rows: RowDataPacket[] = rowsLike as RowDataPacket[];
+
+    let comments: any[] = [];
+    rows.forEach((data) => {
+        let comment = {
+            userName: data.username,
+            content: data.content,
+            date: data.comment_date
+        }
+
+        comments.push(comment);
+    })
+
+    return comments;
+}
+
+router.post('/posts/:id/comments', async (req: Request, res: Response, next: NextFunction) => {
+    await postComment(req.body.postId, req.body.userId, new Date(req.body.date), req.body.content);
+
+    return res.sendStatus(200);
+})
+
+router.get('/posts/:id/comments', async (req: Request, res: Response, next: NextFunction) => {
+    let comments = await getComments(req.params.id);
+
+    return res.json(comments);
+})
+
 module.exports = router;
