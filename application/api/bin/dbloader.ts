@@ -88,22 +88,19 @@ async function makeCommentsTable(connection: any) {
   const [result, _] = await connection.query(
     // Comments Table SQL Goes here
     ` 
-    CREATE TABLE IF NOT EXISTS vixiv.comments (
-      post_id BIGINT NOT NULL,
-      user_id BIGINT NULL,
-      content LONGTEXT NULL,
-      INDEX user_id_idx (user_id ASC) VISIBLE,
-      CONSTRAINT post_id
-        FOREIGN KEY (post_id)
-        REFERENCES vixiv.posts (post_id)
-        ON DELETE NO ACTION
-        ON UPDATE NO ACTION,
-      CONSTRAINT user_id
-        FOREIGN KEY (user_id)
-        REFERENCES vixiv.users (id)
-        ON DELETE NO ACTION
-        ON UPDATE NO ACTION)
-    ENGINE = InnoDB
+    CREATE TABLE comments (
+      post_id bigint NOT NULL,
+      user_id bigint DEFAULT NULL,
+      content longtext,
+      comment_date datetime DEFAULT NULL,
+      comment_id bigint NOT NULL AUTO_INCREMENT,
+      PRIMARY KEY (comment_id),
+      KEY user_id_idx (user_id),
+      KEY post_id (post_id),
+      CONSTRAINT post_id FOREIGN KEY (post_id) REFERENCES posts (post_id),
+      CONSTRAINT user_id FOREIGN KEY (user_id) REFERENCES users (id)
+    ) ENGINE=InnoDB AUTO_INCREMENT=0;
+    
     `
   );
   if (result && result.warningStatus > 0) {
