@@ -85,6 +85,15 @@ router.get('/posts', async (req: Request, res: Response, next: NextFunction) => 
         sqlQuery += `WHERE author_id=? `;
     }
 
+    if (query.search) {
+        if (query.user) {
+            sqlQuery += `AND`;
+        }
+
+        values.push(`${query.search}%`);
+        sqlQuery += `WHERE title LIKE ?`;
+    }
+
     if (query.limit) {
         values.push(Number(query.limit));
         sqlQuery += `ORDER BY post_upload DESC LIMIT ?;`

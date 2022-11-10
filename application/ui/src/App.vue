@@ -20,7 +20,7 @@ if (localStorage.getItem('user')) {
             <RouterLink to="" class="nav-content nav-link nav-title"><b>Some Image Viewer</b></RouterLink>
             <RouterLink to="/" class="nav-link align-right" href="/">Home</RouterLink>
             <div class="search-container">
-                <SearchBox/>
+                <SearchBox id="postSearch" :content="searchResults"/>
             </div>
             <RouterLink v-if="name" to="/post_image" class="nav-link">Post an Image</RouterLink>
             <RouterLink v-if="name" to="/login" class="nav-link">{{ name }}</RouterLink>
@@ -37,6 +37,11 @@ if (localStorage.getItem('user')) {
 
 <script lang="ts">
 export default {
+    data() {
+        return {
+            searchResults: [] as {title: string; image: string, postPath: string}[]
+        }
+    },
     methods: {
         logout() {
             this.$http.get("/logout")
@@ -48,6 +53,30 @@ export default {
                         localStorage.clear();
                     }
                 })
+        },
+        getSearchResults(e: Event) {
+            let target: HTMLInputElement = e.currentTarget! as HTMLInputElement
+            let title = target.value;
+
+            this.$http.get(`/api/image/posts/`, {params: {limit: 4, search: title}})
+                .then((response) => {
+                    if (response.data.length > 0) {
+                        let newResults = [] as [] as {title: string; image: string, postPath: string}[]
+                        response.data.forEach((data: any) => {
+                            let result = {
+                                title: data.title,
+                                image: `/public/storage/images/${data.postId}.png`,
+                                postPath: `/post/${data.postId}`
+                            }
+
+                            newResults.push(result);
+                        })
+
+                        this.searchResults = newResults;
+                    } else {
+                        this.searchResults = [];
+                    }
+                })
         }
     },
     beforeMount() {
@@ -57,6 +86,11 @@ export default {
 
             localStorage.clear();
         }
+
+    },
+    mounted() {
+        let searchBar = document.getElementById("postSearch");
+        searchBar?.addEventListener('input', this.getSearchResults);
     }
 }
 </script>
