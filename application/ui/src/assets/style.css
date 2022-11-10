@@ -376,6 +376,62 @@ input[type="file"] {
   height: auto;
 }
 
+.search-container {
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
+  gap: .3em;
+}
+
+.search-thumbnails {
+  border-radius: 0.5em;
+  padding-left: 3.75em;
+  background-color: var(--tertiary);
+  position: absolute;
+  display: flex;
+  z-index: 98;
+  width: 528px;
+  overflow-x: auto;
+  justify-content: center;
+  margin-top: 1.9em;
+}
+
+.post-overlay {
+  position: relative;
+}
+
+.post-result-container {
+  display: flex;
+  gap: .15em;
+  flex-direction: column;
+  border-radius: .5em;
+  width: 120px;
+  height: 120px;
+  justify-content: center;
+}
+
+.post-result {
+  background-color: var(--tertiary);
+  width: 120px;
+  height: 120px;
+  object-position: center;
+  border-radius: 0.6em;
+  object-fit: cover
+}
+
+.post-result-title {
+  padding: 1.5em;
+  width: 120px;
+  height: 120px;
+  background-color: rgba(0,0,0,0.3);
+  color: #fff;
+  overflow: hidden;
+  border-radius: 0.6em;
+  position: absolute;
+  text-align: center;
+  align-self: center;
+}
+
 @media (max-width: 800px) {
   nav {
     flex-direction: column;
