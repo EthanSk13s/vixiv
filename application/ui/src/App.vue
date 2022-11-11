@@ -58,7 +58,8 @@ export default {
             let target: HTMLInputElement = e.currentTarget! as HTMLInputElement
             let title = target.value;
 
-            this.$http.get(`/api/image/posts/`, {params: {limit: 4, search: title}})
+            if (title.length > 0) {
+                this.$http.get(`/api/image/posts/`, {params: {limit: 4, search: title}})
                 .then((response) => {
                     if (response.data.length > 0) {
                         let newResults = [] as [] as {title: string; image: string, postPath: string}[]
@@ -77,6 +78,9 @@ export default {
                         this.searchResults = [];
                     }
                 })
+            } else {
+                this.searchResults = [];
+            }
         }
     },
     beforeMount() {
