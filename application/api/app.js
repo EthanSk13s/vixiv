@@ -38,7 +38,9 @@ app.use((req, res, next) => {
       delete connection.sessions[userCookie];
     }
   } else {
-    res.clearCookie('login_token');
+    if (userCookie) {
+      res.clearCookie('login_token');
+    }
   }
 
   next()
