@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction, Router } from "express";
 import multer, { diskStorage } from 'multer';
 import { RowDataPacket } from "mysql2";
+import sharp from 'sharp';
 
 import path from "path";
 
@@ -9,20 +10,13 @@ import { db, sessions } from "./connection";
 
 var router = Router();
 
+const THUMBNAIL_SIZE = 180;
+const THUMBNAIL_PATH = path.join(__dirname, "../public/storage/thumbnails");
+const POST_PATH = path.join(__dirname, "../public/storage/images");
+
 // https://github.com/expressjs/multer/issues/439#issuecomment-559698822 file extension mapping
 const extensionMatch = /\.+[\S]+$/;
-const storage = diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, path.join(__dirname, '../public/storage/images'))
-    },
-    filename: (req, file, cb) => {
-        const { originalname } = file;
-
-        const fileExtension = (originalname.match(extensionMatch) || [])[0];
-        cb(null, `${genID()}${fileExtension}`);
-    }
-})
-const upload = multer({ storage: storage })
+const upload = multer({ storage: multer.memoryStorage() })
 
 async function createPost(postId: string, userId: string, title: string, description: string) {
     const conn = db.promise()
@@ -63,7 +57,18 @@ async function getPost(postId: string) {
 router.post('/', upload.single('file-upload'),  async (req: Request, res: Response, next: NextFunction) => {
     const requestCookie = req.signedCookies['login_token'];
     const userId = sessions[requestCookie].userId;
-    const postId = req.file?.filename.replace(extensionMatch, '');
+    const postId = genID();
+
+    // Convert to png
+    sharp(req.file?.buffer)
+        .toFormat('png')
+        .toFile(path.join(POST_PATH, `${postId}.png`))
+
+    // Create the thumbnail
+    sharp(req.file?.buffer)
+        .resize(THUMBNAIL_SIZE, THUMBNAIL_SIZE)
+        .toFormat('jpg')
+        .toFile(path.join(THUMBNAIL_PATH, `${postId}.jpg`))
 
     await createPost(postId!, userId, req.body.imageTitle, req.body.imageDesc);
     res.redirect(`/post/${postId}`);

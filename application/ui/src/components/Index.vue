@@ -22,7 +22,7 @@ export default {
                         let post = {
                             title: element.title,
                             authorName: element.authorName,
-                            path: `/public/storage/images/${element.postId}.png`,
+                            path: `/public/storage/thumbnails/${element.postId}.jpg`,
                             postPath: `/post/${element.postId}`
                         }
 
@@ -39,7 +39,7 @@ export default {
                         let post = {
                             title: element.title,
                             authorName: element.authorName,
-                            path: `/public/storage/images/${element.postId}.png`,
+                            path: `/public/storage/thumbnails/${element.postId}.jpg`,
                             postPath: `/post/${element.postId}`
                         }
 
