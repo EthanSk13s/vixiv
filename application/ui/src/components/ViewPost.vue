@@ -32,7 +32,6 @@ export default {
                 })
         },
         fetchAuthorInfo(id: string) {
-            console.log(this.authorId);
             this.$http.get('/api/image/posts/', {params: {limit: 3, user: id}})
                 .then((response) => {
                     let results = [] as any[];
