@@ -4,7 +4,8 @@ import MiniPost from './MiniPost.vue';
 export default {
     props: {
         userName: String,
-        profilePic: String
+        profilePic: String,
+        miniPosts: [] as any[]
     },
 
     components: {
@@ -28,9 +29,10 @@ export default {
         </div>
         <div class="column-md mini-post-container">
             <div class="mini-post-container">
-                <MiniPost post-link="https://theater.miriondb.com/card/017kth0343_0.png"/>
-                <MiniPost post-link="https://theater.miriondb.com/card_bg/017kth0054_0.png"/>
-                <MiniPost post-link="https://theater.miriondb.com/card_bg/029umi0314_0.png"/>
+                <MiniPost v-for="post in miniPosts"
+                    :post-link="post.postPath"
+                    :image-path="post.image"
+                />
             </div>
         </div>
     </div>

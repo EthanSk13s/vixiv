@@ -48,7 +48,8 @@ async function getPost(postId: string) {
         title: data.title,
         description: data.description,
         postUpload: data.post_upload,
-        authorName: data.username
+        authorName: data.username,
+        authorId: data.id
     }
 
     return post;

@@ -9,9 +9,11 @@ export default {
             title: "",
             description: "",
             authorName: "",
+            authorId: null,
             postUpload: new Date(),
             path: "",
             comments: [] as { userName: any; date: any; content: string; }[],
+            otherPosts: [] as { image: any; postPath: string; }[]
         }
     },
     methods: {
@@ -22,8 +24,29 @@ export default {
                     this.title = data.title;
                     this.description = data.description;
                     this.authorName = data.authorName;
+                    this.authorId = data.authorId;
                     this.postUpload = new Date(data.postUpload);
                     this.path = `/public/storage/images/${id}.png`
+
+                    this.fetchAuthorInfo(String(this.authorId));
+                })
+        },
+        fetchAuthorInfo(id: string) {
+            console.log(this.authorId);
+            this.$http.get('/api/image/posts/', {params: {limit: 3, user: id}})
+                .then((response) => {
+                    let results = [] as any[];
+                    
+                    response.data.forEach((data: any) => {
+                        let result = {
+                            image: `/public/storage/images/${data.postId}.png`,
+                            postPath: `/post/${data.postId}`
+                        }
+
+                        results.push(result);
+                    })
+
+                    this.otherPosts = results;
                 })
         },
         createComment(e: KeyboardEvent) {
@@ -42,9 +65,6 @@ export default {
                 }
 
                 this.$http.post(`/api/image/posts/${this.$route.params.id!}/comments`, comment)
-                    .then((response) => {
-                        console.log(':)');
-                    })
 
                 this.comments.unshift(comment);
 
@@ -113,6 +133,8 @@ export default {
                     :date="comment.date" />
             </div>
         </main>
-        <InfoContainer :user-name=$data.authorName profile-pic="https://theater.miriondb.com/icons/017kth0343_0.png" />
+        <InfoContainer :user-name=$data.authorName
+            profile-pic="https://theater.miriondb.com/icons/017kth0343_0.png"
+            :mini-posts="$data.otherPosts" />
     </div>
 </template>
