@@ -1,15 +1,22 @@
 import {Request, Response, NextFunction, Router} from "express";
 
-import { sessions, UserSession } from "./connection";
-
 var router = Router();
 
-router.get('/logout', function (req: Request, res: Response, next: NextFunction) {
-    const sessionId = req.signedCookies['login_token'];
-    delete sessions[sessionId];
-    res.clearCookie('login_token');
+// I have no clue why copy-pasting this here works, but not in another module so ¯\_(ツ)_/¯
+import 'express-session';
 
-    res.sendStatus(200);
+declare module 'express-session' {
+  export interface SessionData {
+    user: string | null;
+  }
+}
+
+router.get('/logout', function (req: Request, res: Response, next: NextFunction) {
+    req.session.destroy((err) => {
+      if (err) next(err);
+
+      res.sendStatus(200);
+    })
 });
 
 module.exports = router;

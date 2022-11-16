@@ -22,24 +22,24 @@ async function checkUser(username: string, pass: string) {
     }
 }
 
-function createUserSession(req: Request, res: Response, userId: number) {
-    const randId = Math.random() * 10000;
-    const now: Date = new Date();
+function createUserSession(req: Request, res: Response, userId: number, next: NextFunction) {
+    req.session.regenerate((err: any) => {
+        if (err) next(err);
 
-    const expiresAt: Date = new Date(+now + (COOKIE_EXPIRATION * 100));
-    const session: UserSession = new UserSession(userId, expiresAt);
+        req.session.user = String(userId);
 
-    sessions[randId] = session;
-    res.cookie('login_token', randId, {signed: true, expires: expiresAt, sameSite: "lax"})
-    res.json({valid: true, userId: userId});
-    res.end();
+        req.session.save((err: any) => {
+            if (err) next(err);
+            res.json({valid: true, userId: userId});
+        })
+    })
 }
 
 router.post('/', function (req: Request, res: Response, next: NextFunction) {
     checkUser(req.body.username, req.body.password)
         .then((data) => {
             if (data?.result) {
-                createUserSession(req, res, data!.row.id);
+                createUserSession(req, res, data!.row.id, next);
             }
         })
 });

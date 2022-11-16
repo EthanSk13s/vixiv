@@ -5,6 +5,9 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const history = require('connect-history-api-fallback');
+const session = require('express-session');
+const MySQLStore = require('express-mysql-session')(session);
+
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 const loginRouter = require("./routes/login");
@@ -15,6 +18,15 @@ const connection = require("./routes/connection");
 const app = express();
 const staticFileMiddleWare = express.static(path.join(__dirname, '../ui/dist'));
 const COOKIE_SECRET = "CooK!35AReC0Ol";
+
+var sessionStore = new MySQLStore({}, connection.db.promise());
+
+app.use(session({
+	secret: COOKIE_SECRET,
+	store: sessionStore,
+	resave: false,
+	saveUninitialized: false
+}))
 
 app.use(logger("dev"));
 app.use(express.json());
