@@ -84,7 +84,8 @@ export default {
         }
     },
     beforeMount() {
-        if (!this.$cookies.get('login_token')) {
+        // TODO: maybe create a route to make a get request from instead i.e. (/session)
+        if (!this.$cookies.get('connect.sid')) {
             const user = userStore();
             user.$reset();
 
