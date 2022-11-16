@@ -5,7 +5,6 @@ import * as bcrypt from "bcrypt";
 import { db, UserSession, sessions } from "./connection";
 
 var router = Router();
-const COOKIE_EXPIRATION: number = 216000;
 
 /* GET login page. */
 async function checkUser(username: string, pass: string) {
