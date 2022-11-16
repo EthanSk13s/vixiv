@@ -27,8 +27,9 @@ app.use(session({
 	store: sessionStore,
 	resave: false,
 	saveUninitialized: false,
-  cookie: {maxAge: 14400000}
+  cookie: {maxAge: MAX_AGE, signed: true}
 }))
+
 
 app.use(logger("dev"));
 app.use(express.json());
