@@ -18,6 +18,7 @@ const connection = require("./routes/connection");
 const app = express();
 const staticFileMiddleWare = express.static(path.join(__dirname, '../ui/dist'));
 const COOKIE_SECRET = "CooK!35AReC0Ol";
+const MAX_AGE = 14400000;
 
 var sessionStore = new MySQLStore({}, connection.db.promise());
 
@@ -25,7 +26,8 @@ app.use(session({
 	secret: COOKIE_SECRET,
 	store: sessionStore,
 	resave: false,
-	saveUninitialized: false
+	saveUninitialized: false,
+  cookie: {maxAge: 14400000}
 }))
 
 app.use(logger("dev"));
@@ -35,27 +37,6 @@ app.use(cookieParser(COOKIE_SECRET));
 
 app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use('/public', express.static(path.join(__dirname, "public")));
-
-/**
- * Check for session cookies and handle them
- */
-app.use((req, res, next) => {
-  const userCookie = req.signedCookies['login_token'];
-  const sessionCookie = connection.sessions[userCookie];
-
-  if (sessionCookie) {
-    if (sessionCookie.isExpired()) {
-      res.clearCookie('login_token');
-      delete connection.sessions[userCookie];
-    }
-  } else {
-    if (userCookie) {
-      res.clearCookie('login_token');
-    }
-  }
-
-  next()
-})
 
 /*
 app.use("/users", usersRouter); // route middleware from ./routes/users.js
