@@ -20,7 +20,7 @@ if (localStorage.getItem('user')) {
             <RouterLink to="" class="nav-content nav-link nav-title"><b>Some Image Viewer</b></RouterLink>
             <RouterLink to="/" class="nav-link align-right" href="/">Home</RouterLink>
             <div class="search-container">
-                <SearchBox id="postSearch" :content="searchResults"/>
+                <SearchBox id="postSearch" :content="searchResults" />
             </div>
             <RouterLink v-if="name" to="/post_image" class="nav-link">Post an Image</RouterLink>
             <RouterLink v-if="name" to="/login" class="nav-link">{{ name }}</RouterLink>
@@ -39,7 +39,7 @@ if (localStorage.getItem('user')) {
 export default {
     data() {
         return {
-            searchResults: [] as {title: string; image: string, postPath: string}[]
+            searchResults: [] as { title: string; image: string, postPath: string }[]
         }
     },
     methods: {
@@ -59,38 +59,40 @@ export default {
             let title = target.value;
 
             if (title.length > 0) {
-                this.$http.get(`/api/image/posts/`, {params: {limit: 4, search: title}})
-                .then((response) => {
-                    if (response.data.length > 0) {
-                        let newResults = [] as [] as {title: string; image: string, postPath: string}[]
-                        response.data.forEach((data: any) => {
-                            let result = {
-                                title: data.title,
-                                image: `/public/storage/images/${data.postId}.png`,
-                                postPath: `/post/${data.postId}`
-                            }
+                this.$http.get(`/api/image/posts/`, { params: { limit: 4, search: title } })
+                    .then((response) => {
+                        if (response.data.length > 0) {
+                            let newResults = [] as [] as { title: string; image: string, postPath: string }[]
+                            response.data.forEach((data: any) => {
+                                let result = {
+                                    title: data.title,
+                                    image: `/public/storage/images/${data.postId}.png`,
+                                    postPath: `/post/${data.postId}`
+                                }
 
-                            newResults.push(result);
-                        })
+                                newResults.push(result);
+                            })
 
-                        this.searchResults = newResults;
-                    } else {
-                        this.searchResults = [];
-                    }
-                })
+                            this.searchResults = newResults;
+                        } else {
+                            this.searchResults = [];
+                        }
+                    })
             } else {
                 this.searchResults = [];
             }
         }
     },
     beforeMount() {
-        // TODO: maybe create a route to make a get request from instead i.e. (/session)
-        if (!this.$cookies.get('connect.sid')) {
-            const user = userStore();
-            user.$reset();
+        this.$http.get('/session')
+            .then((response) => {
+                if (response.status != 200) {
+                    const user = userStore();
+                    user.$reset();
 
-            localStorage.clear();
-        }
+                    localStorage.clear();
+                }
+            })
 
     },
     mounted() {
