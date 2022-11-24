@@ -56,8 +56,7 @@ async function getPost(postId: string) {
 }
 
 router.post('/', upload.single('file-upload'),  async (req: Request, res: Response, next: NextFunction) => {
-    const requestCookie = req.signedCookies['login_token'];
-    const userId = sessions[requestCookie].userId;
+    const userId = req.session.user
     const postId = genID();
 
     // Convert to png
@@ -71,7 +70,7 @@ router.post('/', upload.single('file-upload'),  async (req: Request, res: Respon
         .toFormat('jpg')
         .toFile(path.join(THUMBNAIL_PATH, `${postId}.jpg`))
 
-    await createPost(postId!, userId, req.body.imageTitle, req.body.imageDesc);
+    await createPost(postId!, userId!, req.body.imageTitle, req.body.imageDesc);
     res.redirect(`/post/${postId}`);
 });
 
