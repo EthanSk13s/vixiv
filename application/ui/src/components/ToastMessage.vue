@@ -1,6 +1,14 @@
 <script lang="ts">
+import { toastStore } from '@/stores/toast';
 
 export default {
+    setup() {
+        const toast = toastStore();
+
+        return {
+            toast
+        }
+    },
     props: {
         type: String,
         message: String,
@@ -20,9 +28,14 @@ export default {
 
             setTimeout(() => {
                 toasty.classList.remove(type);
-            }, 250)
-        }, 3000)
+            }, 250);
 
+            // Here we add a delay to allow the toast store to reset for sure after
+            // the toasty has disappeared
+            setTimeout(() => {
+                this.toast.$reset();
+            }, 1000);
+        }, 3000);
     }
 }
 </script>
