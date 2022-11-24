@@ -1,13 +1,17 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import { userStore } from './stores/user';
+import { toastStore } from './stores/toast';
 import { storeToRefs } from 'pinia';
-import SearchBox from "./components/partials/SearchBox.vue";
 
+import SearchBox from "./components/partials/SearchBox.vue";
+import ToastMessage from "./components/ToastMessage.vue";
 
 const user = userStore();
+const toast = toastStore();
 
 const { name } = storeToRefs(user);
+const { type, message } = storeToRefs(toast);
 
 if (localStorage.getItem('user')) {
     user.$patch({ name: localStorage.getItem('user')! })
@@ -29,6 +33,7 @@ if (localStorage.getItem('user')) {
             <RouterLink v-else to="/register" class="nav-link">Register</RouterLink>
         </nav>
     </header>
+    <ToastMessage ref="toasty" :message='message' :type='type'/>
     <RouterView />
     <footer class="flex-container column">
         Some statisitics for this site or something
