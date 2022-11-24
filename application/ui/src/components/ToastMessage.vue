@@ -6,13 +6,23 @@ export default {
         message: String,
     },
     updated() {
-        console.log('test')
         let toasty = this.$refs.toasty as HTMLElement;
+        let type = this.type as string;
+
+        if (type === 'success' || type === 'warning' ||
+            type === 'error' || type === 'info') {
+            toasty.classList.add(type);
+        }
 
         toasty.classList.remove('hidden');
         setTimeout(() => {
             toasty.classList.add('hidden');
-        }, 5000)
+
+            setTimeout(() => {
+                toasty.classList.remove(type);
+            }, 250)
+        }, 3000)
+
     }
 }
 </script>
@@ -30,7 +40,6 @@ export default {
 .toasty {
     border-radius: 0.5em;
     padding: .5em;
-    background-color: blue;
     position: absolute;
     display: flex;
     z-index: 98;
@@ -43,5 +52,21 @@ export default {
 
 .toasty.hidden {
     top: -100px;
+}
+
+.toasty.success {
+    background-color: #198754
+}
+
+.toasty.warning {
+    background-color: #fd7e14
+}
+
+.toasty.error {
+    background-color: #dc3545
+}
+
+.toasty.info {
+    background-color: blue;
 }
 </style>
