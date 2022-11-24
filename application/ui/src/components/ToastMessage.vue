@@ -28,13 +28,13 @@ export default {
 
             setTimeout(() => {
                 toasty.classList.remove(type);
-            }, 250);
 
-            // Here we add a delay to allow the toast store to reset for sure after
-            // the toasty has disappeared
-            setTimeout(() => {
-                this.toast.$reset();
-            }, 1000);
+                // Here we add a delay to allow the toast store to reset for sure after
+                // the toasty has disappeared
+                setTimeout(() => {
+                    this.toast.$reset();
+                }, 500);
+            }, 250);
         }, 3000);
     }
 }
