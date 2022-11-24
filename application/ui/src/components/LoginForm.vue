@@ -3,13 +3,16 @@ import SubmitButton from './partials/SubmitButton.vue';
 import TextInput from './partials/TextInput.vue';
 
 import { userStore } from '@/stores/user';
+import { toastStore } from '@/stores/toast';
 
 export default {
     setup() {
         const user = userStore();
+        const toast = toastStore();
 
         return {
-            user
+            user,
+            toast
         }
     },
     data() {
@@ -38,7 +41,14 @@ export default {
 
                         localStorage.setItem('user', this.user.name);
                         localStorage.setItem('id', String(this.user.userId));
+
+                        this.toast.$patch({type: 'success'});
+                        this.toast.$patch({message: 'Successfully Logged In'});
+
                         this.$router.push({'name': 'home'});
+                    } else {
+                        this.toast.$patch({type: 'error'});
+                        this.toast.$patch({message: 'Invalid Login Credentials'});
                     }
                 })
         }

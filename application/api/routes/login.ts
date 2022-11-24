@@ -39,6 +39,8 @@ router.post('/', function (req: Request, res: Response, next: NextFunction) {
         .then((data) => {
             if (data?.result) {
                 createUserSession(req, res, data!.row.id, next);
+            } else {
+                res.json({valid: false})
             }
         })
 });
