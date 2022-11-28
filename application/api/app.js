@@ -39,9 +39,8 @@ app.use(cookieParser(COOKIE_SECRET));
 app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use('/public', express.static(path.join(__dirname, "public")));
 
-/*
-app.use("/users", usersRouter); // route middleware from ./routes/users.js
-*/
+
+app.use("/api/users", usersRouter); // route middleware from ./routes/users.js
 app.use("/", indexRouter); // route middleware from ./routes/index.js
 app.use("/api/register", registerRouter);
 app.use("/api/login", loginRouter);
