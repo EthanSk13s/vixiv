@@ -21,7 +21,7 @@ async function checkUser(username: string, pass: string) {
     }
 }
 
-function createUserSession(req: Request, res: Response, userId: number, next: NextFunction) {
+function createUserSession(req: Request, res: Response, userId: number, hasProfile: boolean, next: NextFunction) {
     req.session.regenerate((err: any) => {
         if (err) next(err);
 
@@ -29,7 +29,7 @@ function createUserSession(req: Request, res: Response, userId: number, next: Ne
 
         req.session.save((err: any) => {
             if (err) next(err);
-            res.json({valid: true, userId: userId});
+            res.json({valid: true, userId: userId, hasProfile: hasProfile});
         })
     })
 }
@@ -38,7 +38,7 @@ router.post('/', function (req: Request, res: Response, next: NextFunction) {
     checkUser(req.body.username, req.body.password)
         .then((data) => {
             if (data?.result) {
-                createUserSession(req, res, data!.row.id, next);
+                createUserSession(req, res, data!.row.id, data!.row.has_profile, next);
             } else {
                 res.json({valid: false})
             }

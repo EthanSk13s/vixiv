@@ -39,8 +39,15 @@ export default {
                         this.user.$patch({name: this.username});
                         this.user.$patch({userId: data.userId});
 
+                        if (data.hasProfile) {
+                            this.user.$patch({profilePic: `/public/storage/profiles/${data.userId}.png`});
+                        } else {
+                            this.user.$patch({profilePic: '/public/storage/profiles/default.png'});
+                        }
+
                         localStorage.setItem('user', this.user.name);
                         localStorage.setItem('id', String(this.user.userId));
+                        localStorage.setItem('profilePic', this.user.profilePic);
 
                         this.toast.$patch({type: 'success'});
                         this.toast.$patch({message: 'Successfully Logged In'});

@@ -10,9 +10,10 @@ export default {
             description: "",
             authorName: "",
             authorId: null,
+            authorPfp: '',
             postUpload: new Date(),
             path: "",
-            comments: [] as { userName: any; date: any; content: string; }[],
+            comments: [] as { userName: any; date: any; content: string; pfp: string }[],
             otherPosts: [] as { image: any; postPath: string; }[]
         }
     },
@@ -28,14 +29,20 @@ export default {
                     this.postUpload = new Date(data.postUpload);
                     this.path = `/public/storage/images/${id}.png`
 
+                    if (data.hasProfile) {
+                        this.authorPfp = `/public/storage/profiles/${id}.png`
+                    } else {
+                        this.authorPfp = `/public/storage/profiles/default.png`
+                    }
+
                     this.fetchAuthorInfo(String(this.authorId));
                 })
         },
         fetchAuthorInfo(id: string) {
-            this.$http.get('/api/image/posts/', {params: {limit: 3, user: id}})
+            this.$http.get('/api/image/posts/', { params: { limit: 3, user: id } })
                 .then((response) => {
                     let results = [] as any[];
-                    
+
                     response.data.forEach((data: any) => {
                         let result = {
                             image: `/public/storage/images/${data.postId}.png`,
@@ -60,7 +67,8 @@ export default {
                     userId: userId,
                     userName: localStorage.getItem('user'),
                     date: new Date(),
-                    content: value
+                    content: value,
+                    pfp: localStorage.getItem('profilePic')!
                 }
 
                 this.$http.post(`/api/image/posts/${this.$route.params.id!}/comments`, comment)
@@ -78,13 +86,23 @@ export default {
                         let comment = {
                             userName: data.userName,
                             date: new Date(data.date),
-                            content: data.content
+                            content: data.content,
+                            pfp: ''
+                        }
+
+                        if (data.hasProfile) {
+                            comment.pfp = `/public/storage/profiles/${data.authorId}.png`
+                        } else {
+                            comment.pfp = `/public/storage/profiles/default.png`
                         }
 
 
                         this.comments.push(comment);
                     })
                 })
+        },
+        getIcon() {
+            return localStorage.getItem('profilePic')!
         }
     },
     components: {
@@ -123,17 +141,14 @@ export default {
                 </div>
                 <div class="comment-parent">
                     <div class="comment-pfp">
-                        <img class="comment-pfp" src="https://theater.miriondb.com/icons/017kth0343_0.png" alt="pfp">
+                        <img class="comment-pfp" :src="getIcon()" alt="pfp">
                     </div>
                     <TextAreaVue placeholder="Post a comment..." id="commentInput" />
                 </div>
-                <Comment v-for="comment in comments" :user-name="comment.userName"
-                    profile-pic="https://theater.miriondb.com/icons/017kth0343_0.png" :comment-content="comment.content"
-                    :date="comment.date" />
+                <Comment v-for="comment in comments" :user-name="comment.userName" :profile-pic="comment.pfp"
+                    :comment-content="comment.content" :date="comment.date" />
             </div>
         </main>
-        <InfoContainer :user-name=$data.authorName
-            profile-pic="https://theater.miriondb.com/icons/017kth0343_0.png"
-            :mini-posts="$data.otherPosts" />
+        <InfoContainer :user-name=$data.authorName :profile-pic=$data.authorPfp :mini-posts="$data.otherPosts" />
     </div>
 </template>

@@ -16,6 +16,7 @@ const { type, message } = storeToRefs(toast);
 if (localStorage.getItem('user')) {
     user.$patch({ name: localStorage.getItem('user')! })
     user.$patch({ userId: Number(localStorage.getItem('id')!) })
+    user.$patch({ profilePic: localStorage.getItem('profilePic')! })
 }
 </script>
 

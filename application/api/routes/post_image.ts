@@ -49,7 +49,8 @@ async function getPost(postId: string) {
         description: data.description,
         postUpload: data.post_upload,
         authorName: data.username,
-        authorId: data.id
+        authorId: data.id,
+        hasProfile: data.has_profile
     }
 
     return post;
@@ -112,7 +113,8 @@ router.get('/posts', async (req: Request, res: Response, next: NextFunction) => 
         let post = {
             postId: data.post_id,
             title: data.title,
-            authorName: data.username
+            authorName: data.username,
+            authorId: data.id
         }
 
         posts.push(post);
@@ -140,9 +142,11 @@ async function getComments(postId: string) {
     let comments: any[] = [];
     rows.forEach((data) => {
         let comment = {
+            userId: data.id,
             userName: data.username,
             content: data.content,
-            date: data.comment_date
+            date: data.comment_date,
+            hasProfile: data.has_profile
         }
 
         comments.push(comment);

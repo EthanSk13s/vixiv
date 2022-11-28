@@ -5,8 +5,8 @@ import ThumbnailPost from './partials/ThumbnailPost.vue';
 export default {
     data() {
         return {
-            latestPosts: [] as { title: any; authorName: any; path: string; postPath: string }[],
-            userPosts: [] as { title: any; authorName: any; path: string; postPath: string }[]
+            latestPosts: [] as { title: any; authorName: any; path: string; postPath: string, pfp: string }[],
+            userPosts: [] as { title: any; authorName: any; path: string; postPath: string, pfp: string }[]
         }
     },
     components: {
@@ -15,15 +15,22 @@ export default {
     },
     methods: {
         getLatestPosts() {
-            this.$http.get('/api/image/posts/', {params: {limit: 15}})
+            this.$http.get('/api/image/posts/', { params: { limit: 15 } })
                 .then((response) => {
-                    let posts: { title: any; authorName: any; path: string; postPath: string }[] = []
+                    let posts: { title: any; authorName: any; path: string; postPath: string, pfp: string }[] = []
                     response.data.forEach((element: any) => {
                         let post = {
                             title: element.title,
                             authorName: element.authorName,
                             path: `/public/storage/thumbnails/${element.postId}.jpg`,
-                            postPath: `/post/${element.postId}`
+                            postPath: `/post/${element.postId}`,
+                            pfp: ''
+                        }
+
+                        if (element.hasProfile) {
+                            post.pfp = `/public/storage/profiles/${element.authorId}.png`
+                        } else {
+                            post.pfp = `/public/storage/profiles/default.png`
                         }
 
                         posts.push(post);
@@ -32,15 +39,23 @@ export default {
                 })
         },
         getUserPosts() {
-            this.$http.get('/api/image/posts/', {params: {limit: 15, user: localStorage.getItem('id')}})
+            let userId = localStorage.getItem('id');
+            this.$http.get('/api/image/posts/', { params: { limit: 15, user: userId } })
                 .then((response) => {
-                    let posts: { title: any; authorName: any; path: string; postPath: string }[] = []
+                    let posts: { title: any; authorName: any; path: string; postPath: string, pfp: string }[] = []
                     response.data.forEach((element: any) => {
                         let post = {
                             title: element.title,
                             authorName: element.authorName,
                             path: `/public/storage/thumbnails/${element.postId}.jpg`,
-                            postPath: `/post/${element.postId}`
+                            postPath: `/post/${element.postId}`,
+                            pfp: ''
+                        }
+
+                        if (element.hasProfile) {
+                            post.pfp = `/public/storage/profiles/${userId}.png`
+                        } else {
+                            post.pfp = `/public/storage/profiles/default.png`
                         }
 
                         posts.push(post);
@@ -68,23 +83,17 @@ export default {
                     <h2>Latest Posts</h2>
                 </div>
                 <div class="flex-container row post-flex">
-                    <ThumbnailPost v-if="latestPosts" v-for="post in latestPosts" 
-                        :author="post.authorName"
-                        authorPfp="https://theater.miriondb.com/card_bg/029umi0314_0.png"
-                        :title="post.title" 
-                        :image="post.path"
-                        :postPath="post.postPath"/>
+                    <ThumbnailPost v-if="latestPosts" v-for="post in latestPosts" :author="post.authorName"
+                        :authorPfp="post.pfp" :title="post.title"
+                        :image="post.path" :postPath="post.postPath" />
                 </div>
                 <div v-if="userPosts.length != 0">
                     <h2>Your Posts</h2>
                 </div>
                 <div class="flex-container row post-flex">
-                    <ThumbnailPost v-if="userPosts.length != 0" v-for="post in userPosts" 
-                        :author="post.authorName"
-                        authorPfp="https://theater.miriondb.com/card_bg/029umi0314_0.png"
-                        :title="post.title" 
-                        :image="post.path"
-                        :postPath="post.postPath"/>
+                    <ThumbnailPost v-if="userPosts.length != 0" v-for="post in userPosts" :author="post.authorName"
+                        :authorPfp="post.pfp" :title="post.title"
+                        :image="post.path" :postPath="post.postPath" />
                 </div>
             </section>
         </main>
