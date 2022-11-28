@@ -2,7 +2,7 @@ import { Request, Response, NextFunction, Router} from "express";
 import { RowDataPacket } from "mysql2/promise";
 import * as bcrypt from "bcrypt";
 
-import { db, UserSession, sessions } from "./connection";
+import { db } from "./connection";
 
 var router = Router();
 
@@ -10,7 +10,7 @@ var router = Router();
 async function checkUser(username: string, pass: string) {
     let matchPassResult: boolean = false;
 
-    const conn = db.promise();
+    const conn = db;
     const [rowsLike, fields] = await conn.query(`SELECT * FROM vixiv.users WHERE username=?`, [username]);
     const rows: RowDataPacket[] = rowsLike as RowDataPacket[];
 

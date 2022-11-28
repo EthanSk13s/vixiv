@@ -20,7 +20,7 @@ const staticFileMiddleWare = express.static(path.join(__dirname, '../ui/dist'));
 const COOKIE_SECRET = "CooK!35AReC0Ol";
 const MAX_AGE = 14400000;
 
-var sessionStore = new MySQLStore({}, connection.db.promise());
+var sessionStore = new MySQLStore({}, connection.db);
 
 app.use(session({
 	secret: COOKIE_SECRET,
@@ -54,6 +54,8 @@ app.use(history({
 
 app.use(staticFileMiddleWare);
 
+
+// TODO: Convert these to vue pages also remove the stacktrace from client
 /**
  * Catch all route, if we get to here then the 
  * resource requested could not be found.

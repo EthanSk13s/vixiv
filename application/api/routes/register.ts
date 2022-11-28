@@ -10,7 +10,7 @@ var router = Router();
 
 async function registerUser(res: Response, username: string, email: string, pass: string) {
     let hashedPass: string = await bcrypt.hash(pass, SALT_ROUNDS);
-    const conn = db.promise();
+    const conn = db;
 
     const [rowsLike, fields] = await conn.query(`SELECT * FROM users WHERE username=?`, username);
     const check = rowsLike as RowDataPacket[];

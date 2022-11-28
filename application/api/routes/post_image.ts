@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction, Router } from "express";
-import multer, { diskStorage } from 'multer';
+import multer from 'multer';
 import { RowDataPacket } from "mysql2";
 import sharp from 'sharp';
 
@@ -15,11 +15,10 @@ const THUMBNAIL_PATH = path.join(__dirname, "../public/storage/thumbnails");
 const POST_PATH = path.join(__dirname, "../public/storage/images");
 
 // https://github.com/expressjs/multer/issues/439#issuecomment-559698822 file extension mapping
-const extensionMatch = /\.+[\S]+$/;
 const upload = multer({ storage: multer.memoryStorage() })
 
 async function createPost(postId: string, userId: string, title: string, description: string) {
-    const conn = db.promise()
+    const conn = db;
     const now = new Date();
 
     await conn.query(
@@ -31,7 +30,7 @@ async function createPost(postId: string, userId: string, title: string, descrip
 }
 
 async function getPost(postId: string) {
-    const conn = db.promise()
+    const conn = db;
 
     let [rowsLike] = await conn.query(
         `
@@ -81,7 +80,7 @@ router.get('/posts/:id', async (req: Request, res: Response, next: NextFunction)
 })
 
 router.get('/posts', async (req: Request, res: Response, next: NextFunction) => {
-    const conn = db.promise();
+    const conn = db;
     const query = req.query;
     let values = [];
     let sqlQuery = `SELECT * FROM vixiv.posts INNER JOIN users ON posts.author_id = users.id `;
@@ -125,7 +124,7 @@ router.get('/posts', async (req: Request, res: Response, next: NextFunction) => 
 })
 
 async function postComment(postId: number, userId: number, date: Date, content: string) {
-    const conn = db.promise();
+    const conn = db;
 
     let sqlQuery = 'INSERT INTO comments(post_id, user_id, comment_date, content) VALUES(?, ?, ?, ?);'
 
@@ -133,7 +132,7 @@ async function postComment(postId: number, userId: number, date: Date, content: 
 }
 
 async function getComments(postId: string) {
-    const conn = db.promise();
+    const conn = db;
 
     let sqlQuery = `SELECT * FROM comments INNER JOIN users ON comments.user_id=users.id WHERE post_id=? ORDER BY comment_date DESC;`
 

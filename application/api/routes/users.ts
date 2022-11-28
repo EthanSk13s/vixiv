@@ -17,7 +17,7 @@ var router = Router();
 /* GET users listing. */
 router.get('/profile/:id', async function (req: Request, res: Response, next: NextFunction) {
     const userId = req.session.user;
-    const conn = db.promise();
+    const conn = db;
 
     let [rowsLike] = await conn.query('SELECT * FROM users WHERE id=?', [userId]);
     const rows: RowDataPacket[] = rowsLike as RowDataPacket[];
@@ -32,7 +32,7 @@ router.get('/profile/:id', async function (req: Request, res: Response, next: Ne
 
 router.post('/profile', upload.single('avatar-crop'), async function (req: Request, res: Response, next: NextFunction) {
     const userId = req.session.user;
-    const conn = db.promise();
+    const conn = db;
 
     // Convert to png
     if (req.file) {
