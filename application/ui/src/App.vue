@@ -15,6 +15,7 @@ const { type, message } = storeToRefs(toast);
 
 if (localStorage.getItem('user')) {
     user.$patch({ name: localStorage.getItem('user')! })
+    user.$patch({ userId: Number(localStorage.getItem('id')!) })
 }
 </script>
 
@@ -27,7 +28,7 @@ if (localStorage.getItem('user')) {
                 <SearchBox id="postSearch" :content="searchResults" />
             </div>
             <RouterLink v-if="name" to="/post_image" class="nav-link">Post an Image</RouterLink>
-            <RouterLink v-if="name" to="/login" class="nav-link">{{ name }}</RouterLink>
+            <RouterLink v-if="name" to="/profile/" class="nav-link">{{ name }}</RouterLink>
             <RouterLink v-else to="/login" class="nav-link">Login</RouterLink>
             <RouterLink v-if="name" @click="logout()" to="/" class="nav-link">Logout</RouterLink>
             <RouterLink v-else to="/register" class="nav-link">Register</RouterLink>
