@@ -5,6 +5,7 @@ import PostImageView from '../views/PostImageView.vue'
 import LoginView from '../views/LoginView.vue'
 import RegisterView from '@/views/RegisterView.vue'
 import ProfileView from '@/views/ProfileView.vue';
+import axios from 'axios'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -18,11 +19,11 @@ const router = createRouter({
       path: '/post_image',
       name: 'postimage',
       component: PostImageView,
-      // TODO: Pretty rudimentary, should add a check server-side too.
       beforeEnter: (to, from) => {
-        if (!localStorage.getItem('user')) {
-          router.push('login');
-        }
+        axios.get('/session')
+          .catch((error) => {
+            router.push('login')
+          })
       }
     },
     {
@@ -42,7 +43,13 @@ const router = createRouter({
     {
       path: '/profile',
       name: 'profile',
-      component: ProfileView
+      component: ProfileView,
+      beforeEnter: (to, from) => {
+        axios.get('/session')
+          .catch((error) => {
+            router.push('login')
+          })
+      }
     }
   ]
 })
