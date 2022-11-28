@@ -1,7 +1,11 @@
 <script lang="ts">
+import { storeToRefs } from "pinia";
+
 import Comment from "./partials/Comment.vue"
 import InfoContainer from "./partials/InfoContainer.vue";
 import TextAreaVue from "./partials/TextArea.vue";
+
+import { userStore } from "@/stores/user";
 
 import { CommentModel } from "@/models";
 import { CONFIG } from "../../../config";
@@ -17,7 +21,15 @@ export default {
             postUpload: new Date(),
             path: "",
             comments: [] as CommentModel[],
-            otherPosts: [] as { image: any; postPath: string; }[]
+            otherPosts: [] as { image: any; postPath: string; }[],
+            loggedIn: false
+        }
+    },
+    setup() {
+        const user = userStore();
+
+        return {
+            user
         }
     },
     methods: {
@@ -95,7 +107,14 @@ export default {
                 })
         },
         getIcon() {
-            return localStorage.getItem('profilePic')!
+            let path = ''
+            if (localStorage.getItem('profilePic')) {
+                path = localStorage.getItem('profilePic')!
+            } else {
+                path = `${CONFIG.PFP_PATH}/default.png`
+            }
+
+            return path
         }
     },
     components: {
@@ -106,6 +125,13 @@ export default {
     mounted() {
         this.fetchPost(String(this.$route.params.id!));
         this.fetchComments(String(this.$route.params.id!));
+
+        this.$http.get('/session')
+            .then((response) => {
+                if (response.status == 200) {
+                    this.$data.loggedIn = true;
+                }
+            })
 
         let commentInput = document.getElementById('commentInput');
 
@@ -136,7 +162,8 @@ export default {
                     <div class="comment-pfp">
                         <img class="comment-pfp" :src="getIcon()" alt="pfp">
                     </div>
-                    <TextAreaVue placeholder="Post a comment..." id="commentInput" />
+                    <TextAreaVue v-if="loggedIn" placeholder="Post a comment..." id="commentInput"/>
+                    <TextAreaVue v-else placeholder="You must be logged in to post a comment" id="commentInput" :disabled="true"/>
                 </div>
                 <Comment v-for="comment in comments" :user-name="comment.author" :profile-pic="comment.getProfilePath()"
                     :comment-content="comment.content" :date="comment.getDateString()" />

@@ -2,7 +2,8 @@
 export default {
     props: {
         placeholder: String,
-        id: String
+        id: String,
+        disabled: Boolean,
     },
     methods: {
         OnInput(e: Event) {
@@ -21,6 +22,7 @@ export default {
 
 <template>
     <div class="comment-input-container">
-        <textarea ref="textInput" class="comment-input" name="" :id=id rows="1" maxlength="140" :placeholder="placeholder"></textarea>
+        <textarea v-if="disabled === false" ref="textInput" class="comment-input" name="" :id=id rows="1" maxlength="140" :placeholder="placeholder"></textarea>
+        <textarea v-else ref="textInput" class="comment-input" name="" :id=id rows="1" maxlength="140" :placeholder="placeholder" disabled></textarea>
     </div>
 </template>
