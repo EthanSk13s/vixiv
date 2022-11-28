@@ -1,34 +1,18 @@
 import mysql2 from "mysql2";
-import {USER, PASS} from "../config";
-
-export class UserSession {
-    userId: number;
-    expiration: Date;
-
-    constructor(userId: number, expiration: Date) {
-        this.userId = userId;
-        this.expiration = expiration;
-    }
-
-    isExpired() {
-        return this.expiration < (new Date());
-    }
-}
+import { CONFIG } from "../../config";
 
 function createConnection() {
 
     let conn: mysql2.Pool = mysql2.createPool({
             host: "localhost",
-            //TODO make sure to change to the user you want to use
-            user: USER, //Your DB username
-            //TODO make sure to change to the correct password for your user.
-            password: PASS, //Your DB password
-            database: "vixiv",
+            user: CONFIG.DB_USER,
+            password: CONFIG.DB_PASS,
+            database: CONFIG.DB_NAME,
             supportBigNumbers: true
     })
 
     return conn;
 }
 
-export const db = createConnection();
+export const db = createConnection().promise();
 export var sessions: any = {};

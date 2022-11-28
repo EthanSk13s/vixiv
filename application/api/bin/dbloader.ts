@@ -1,6 +1,6 @@
 "use strict";
 //TODO: Probably should not hardcode the db name
-import { USER, PASS } from "../config";
+import { CONFIG } from "../../config";
 
 const mysql = require("mysql2/promise");
 
@@ -18,15 +18,12 @@ function displayWarningMessage(warning: any) {
 async function getConnection() {
   return await mysql.createConnection({
     host: "localhost",
-    //TODO make sure to change to the user you want to use
-    user: USER, //Your DB username
-    //TODO make sure to change to the correct password for your user.
-    password: PASS, //Your DB password
+    user: CONFIG.DB_USER, //Your DB username
+    password: CONFIG.DB_PASS, //Your DB password
   });
 }
 
 async function makeDatabase(connection: any) {
-  //TODO make sure to change yourdbnamehere
   const [result, _] = await connection.query(
     "CREATE DATABASE IF NOT EXISTS vixiv;"
   );

@@ -1,6 +1,7 @@
 export const CONFIG = {
     DB_USER: "vixiv",
     DB_PASS: "vixiv",
+    DB_NAME: "vixiv",
     THUMBNAIL_PATH: '/public/storage/thumbnails',
     PFP_PATH: '/public/storage/profiles',
     POST_PATH: '/post',
