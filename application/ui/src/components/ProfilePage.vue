@@ -6,12 +6,24 @@ import InfoContainer from './partials/InfoContainer.vue';
 import TextInput from './partials/TextInput.vue';
 import SubmitButton from './partials/SubmitButton.vue';
 
+import { toastStore } from '@/stores/toast';
+import { userStore } from '@/stores/user';
+
 export default {
     data() {
         return {
             username: '',
             hasProfile: false,
             formData: new FormData()
+        }
+    },
+    setup() {
+        const toast = toastStore();
+        const user = userStore();
+
+        return {
+            toast,
+            user
         }
     },
     components: {
@@ -163,21 +175,35 @@ export default {
             e.preventDefault();
             let form = this.$refs.updateForm as HTMLFormElement;
             let data = new FormData(form);
+            let username = data.get('username');
+            let password = data.get('password');
 
-            if (data.get('username')) {
-                this.$data.formData.append('username', data.get('username')!)
+            if (username) {
+                this.$data.formData.append('username', username);
             }
 
-            if (data.get('password')) {
-                this.$data.formData.append('password', data.get('password')!)
+            if (password) {
+                this.$data.formData.append('password', password);
             }
 
             this.$http.post(`/api/users/profile/`, this.$data.formData)
                 .then((response) => {
                     if (response.status == 200) {
-                        localStorage.setItem('user', this.$data.formData.get('username') as string);
+                        if (username) {
+                            this.user.$patch({name: username as string})
+                            localStorage.setItem('user', username as string);
+                        }
 
-                        this.$router.push({ 'name': 'profile' });
+                        if (data.get('avatar-crop')) {
+                            let userId = localStorage.getItem('id');
+                            let path = `/public/storage/profiles/${userId}.png`
+
+                            this.user.$patch({profilePic: path});
+                            localStorage.setItem('profilePic', path);
+                        }
+
+                        this.toast.$patch({ type: 'success' });
+                        this.toast.$patch({ message: 'Information has been updated' });
                     }
                 });
         }
