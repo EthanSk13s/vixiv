@@ -47,6 +47,7 @@ async function makeUsersTable(connection: any) {
       username VARCHAR(45) NULL,
       password CHAR(64) NULL,
       email VARCHAR(255) NULL,
+      has_profile TINYINT(1) NULL,
       PRIMARY KEY (id))
     ENGINE = InnoDB
     `
