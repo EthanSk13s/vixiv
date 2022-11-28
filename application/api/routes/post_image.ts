@@ -114,7 +114,8 @@ router.get('/posts', async (req: Request, res: Response, next: NextFunction) => 
             postId: data.post_id,
             title: data.title,
             authorName: data.username,
-            authorId: data.id
+            authorId: data.id,
+            hasProfile: data.has_profile
         }
 
         posts.push(post);

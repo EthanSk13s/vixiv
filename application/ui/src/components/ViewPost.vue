@@ -30,7 +30,7 @@ export default {
                     this.path = `/public/storage/images/${id}.png`
 
                     if (data.hasProfile) {
-                        this.authorPfp = `/public/storage/profiles/${id}.png`
+                        this.authorPfp = `/public/storage/profiles/${this.authorId}.png`
                     } else {
                         this.authorPfp = `/public/storage/profiles/default.png`
                     }
@@ -91,7 +91,7 @@ export default {
                         }
 
                         if (data.hasProfile) {
-                            comment.pfp = `/public/storage/profiles/${data.authorId}.png`
+                            comment.pfp = `/public/storage/profiles/${data.userId}.png`
                         } else {
                             comment.pfp = `/public/storage/profiles/default.png`
                         }
