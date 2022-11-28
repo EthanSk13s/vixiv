@@ -5,7 +5,7 @@ import { db } from "./connection";
 import { genID } from "../helpers/id-gen";
 import { RowDataPacket } from "mysql2";
 
-const SALT_ROUNDS: number = 15;
+export const SALT_ROUNDS: number = 15;
 var router = Router();
 
 async function registerUser(res: Response, username: string, email: string, pass: string) {
