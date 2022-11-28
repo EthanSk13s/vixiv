@@ -10,7 +10,7 @@ import ToastMessage from "./components/ToastMessage.vue";
 const user = userStore();
 const toast = toastStore();
 
-const { name } = storeToRefs(user);
+const { name, profilePic } = storeToRefs(user);
 const { type, message } = storeToRefs(toast);
 
 if (localStorage.getItem('user')) {
@@ -29,13 +29,17 @@ if (localStorage.getItem('user')) {
                 <SearchBox id="postSearch" :content="searchResults" />
             </div>
             <RouterLink v-if="name" to="/post_image" class="nav-link">Post an Image</RouterLink>
-            <RouterLink v-if="name" to="/profile/" class="nav-link">{{ name }}</RouterLink>
+            <a v-if="name" href="/profile" class="nav-link">
+                <div class="nav-pfp">
+                    <img class="nav-pfp" :src="profilePic" alt="pfp" srcset="">
+                </div>
+            </a>
             <RouterLink v-else to="/login" class="nav-link">Login</RouterLink>
             <RouterLink v-if="name" @click="logout()" to="/" class="nav-link">Logout</RouterLink>
             <RouterLink v-else to="/register" class="nav-link">Register</RouterLink>
         </nav>
     </header>
-    <ToastMessage ref="toasty" :message='message' :type='type'/>
+    <ToastMessage ref="toasty" :message='message' :type='type' />
     <RouterView />
     <footer class="flex-container column">
         Some statisitics for this site or something
