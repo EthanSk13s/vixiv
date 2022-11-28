@@ -10,7 +10,8 @@ export default {
     data() {
         return {
             username: '',
-            hasProfile: false
+            hasProfile: false,
+            formData: new FormData()
         }
     },
     components: {
@@ -69,8 +70,11 @@ export default {
                                 pfpImg!.src = roundedCanvas.toDataURL();
 
                                 roundedCanvas.toBlob((blob) => {
-                                    data.delete('file-upload');
-                                    data.append('avatar', blob!, 'avatar.png');
+                                    if (this.$data.formData.get('avatar-crop')) {
+                                        this.$data.formData.set('avatar-crop', blob!, 'avatar.png')
+                                    } else {
+                                        this.$data.formData.append('avatar-crop', blob!, 'avatar.png')
+                                    }
                                 });
                             }
                         };
@@ -154,6 +158,28 @@ export default {
                         pfp.src = `/public/storage/profiles/default.png`
                     }
                 })
+        },
+        postData(e: Event) {
+            e.preventDefault();
+            let form = this.$refs.updateForm as HTMLFormElement;
+            let data = new FormData(form);
+
+            if (data.get('username')) {
+                this.$data.formData.append('username', data.get('username')!)
+            }
+
+            if (data.get('password')) {
+                this.$data.formData.append('password', data.get('password')!)
+            }
+
+            this.$http.post(`/api/users/profile/`, this.$data.formData)
+                .then((response) => {
+                    if (response.status == 200) {
+                        localStorage.setItem('user', this.$data.formData.get('username') as string);
+
+                        this.$router.push({ 'name': 'profile' });
+                    }
+                });
         }
     },
     mounted() {
@@ -185,13 +211,13 @@ export default {
                 <h1>Settings</h1>
             </div>
             <div class="settings-container column">
-                <form ref="updateForm" action="" method="POST">
-                    <div class="flex-container column">
-                        <label for="file-upload" class="post-button">
-                            Change Profile Picture
-                        </label>
-                        <input name="file-upload" id="file-upload" type="file" accept="image/*" required />
-                    </div>
+                <div class="flex-container column">
+                    <label for="file-upload" class="post-button">
+                        Change Profile Picture
+                    </label>
+                    <input name="avatar" id="file-upload" type="file" accept="image/*" />
+                </div>
+                <form ref="updateForm" @submit="postData" method="POST" enctype="multipart/form-data">
                     <TextInput label-name="Change Username" place-holder="New Username" />
                     <div class="column-md">
                         <label class="input-label" for="password">New Password</label>
