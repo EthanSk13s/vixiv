@@ -4,6 +4,7 @@ import InfoContainer from "./partials/InfoContainer.vue";
 import TextAreaVue from "./partials/TextArea.vue";
 
 import { CommentModel } from "@/models";
+import { CONFIG } from "../../../config";
 
 export default {
     data() {
@@ -29,12 +30,12 @@ export default {
                     this.authorName = data.authorName;
                     this.authorId = data.authorId;
                     this.postUpload = new Date(data.postUpload);
-                    this.path = `/public/storage/images/${id}.png`
+                    this.path = `${CONFIG.IMAGE_PATH}/${id}.png`
 
                     if (data.hasProfile) {
-                        this.authorPfp = `/public/storage/profiles/${this.authorId}.png`
+                        this.authorPfp = `${CONFIG.PFP_PATH}/${this.authorId}.png`
                     } else {
-                        this.authorPfp = `/public/storage/profiles/default.png`
+                        this.authorPfp = `${CONFIG.PFP_PATH}/default.png`
                     }
 
                     this.fetchAuthorInfo(String(this.authorId));
@@ -47,8 +48,8 @@ export default {
 
                     response.data.forEach((data: any) => {
                         let result = {
-                            image: `/public/storage/images/${data.postId}.png`,
-                            postPath: `/post/${data.postId}`
+                            image: `${CONFIG.IMAGE_PATH}/${data.postId}.png`,
+                            postPath: `${CONFIG.POST_PATH}/${data.postId}`
                         }
 
                         results.push(result);

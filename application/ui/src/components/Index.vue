@@ -3,6 +3,7 @@ import InfoContainer from '@/components/partials/InfoContainer.vue';
 import ThumbnailPost from './partials/ThumbnailPost.vue';
 
 import { MiniPostModel }from '@/models';
+import { CONFIG } from '../../../config';
 
 export default {
     data() {
@@ -17,7 +18,7 @@ export default {
     },
     methods: {
         getLatestPosts() {
-            this.$http.get('/api/image/posts/', { params: { limit: 15 } })
+            this.$http.get('/api/image/posts/', { params: { limit: CONFIG.LATEST_POST_LIMIT } })
                 .then((response) => {
                     let posts: MiniPostModel[] = []
                     response.data.forEach((element: any) => {
@@ -30,7 +31,7 @@ export default {
         },
         getUserPosts() {
             let userId = localStorage.getItem('id');
-            this.$http.get('/api/image/posts/', { params: { limit: 15, user: userId } })
+            this.$http.get('/api/image/posts/', { params: { limit: CONFIG.USER_POST_LIMIT, user: userId } })
                 .then((response) => {
                     let posts: MiniPostModel[] = []
                     response.data.forEach((element: any) => {

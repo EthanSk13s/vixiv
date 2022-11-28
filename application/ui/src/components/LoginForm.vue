@@ -5,6 +5,8 @@ import TextInput from './partials/TextInput.vue';
 import { userStore } from '@/stores/user';
 import { toastStore } from '@/stores/toast';
 
+import { CONFIG } from '../../../config';
+
 export default {
     setup() {
         const user = userStore();
@@ -40,9 +42,9 @@ export default {
                         this.user.$patch({userId: data.userId});
 
                         if (data.hasProfile) {
-                            this.user.$patch({profilePic: `/public/storage/profiles/${data.userId}.png`});
+                            this.user.$patch({profilePic: `${CONFIG.PFP_PATH}/${data.userId}.png`});
                         } else {
-                            this.user.$patch({profilePic: '/public/storage/profiles/default.png'});
+                            this.user.$patch({profilePic: `${CONFIG.PFP_PATH}/default.png`});
                         }
 
                         localStorage.setItem('user', this.user.name);

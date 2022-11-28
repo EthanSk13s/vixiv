@@ -9,6 +9,8 @@ import SubmitButton from './partials/SubmitButton.vue';
 import { toastStore } from '@/stores/toast';
 import { userStore } from '@/stores/user';
 
+import { CONFIG } from '../../../config';
+
 export default {
     data() {
         return {
@@ -165,9 +167,9 @@ export default {
                     let pfp = document.getElementById('pfp') as HTMLImageElement;
 
                     if (response.data.hasProfile) {
-                        pfp.src = `/public/storage/profiles/${id}.png`
+                        pfp.src = `${CONFIG.PFP_PATH}/${id}.png`
                     } else {
-                        pfp.src = `/public/storage/profiles/default.png`
+                        pfp.src = `${CONFIG.PFP_PATH}/default.png`
                     }
                 })
         },
@@ -224,8 +226,7 @@ export default {
         <div class="info-container">
             <section class="column-md profile-pic">
                 <div>
-                    <img id="pfp" class="profile-pic" src="https://theater.miriondb.com/icons/017kth0343_0.png"
-                        alt="pfp">
+                    <img id="pfp" class="profile-pic" alt="pfp">
                 </div>
             </section>
             <div class="column-md center-text">
