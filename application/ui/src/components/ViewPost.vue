@@ -3,6 +3,8 @@ import Comment from "./partials/Comment.vue"
 import InfoContainer from "./partials/InfoContainer.vue";
 import TextAreaVue from "./partials/TextArea.vue";
 
+import { CommentModel } from "@/models";
+
 export default {
     data() {
         return {
@@ -13,7 +15,7 @@ export default {
             authorPfp: '',
             postUpload: new Date(),
             path: "",
-            comments: [] as { userName: any; date: any; content: string; pfp: string }[],
+            comments: [] as CommentModel[],
             otherPosts: [] as { image: any; postPath: string; }[]
         }
     },
@@ -62,16 +64,18 @@ export default {
                 let postId = this.$route.params.id!;
                 let userId = localStorage.getItem('id');
 
-                let comment = {
+                let postComment = {
                     postId: postId,
                     userId: userId,
-                    userName: localStorage.getItem('user'),
                     date: new Date(),
                     content: value,
-                    pfp: localStorage.getItem('profilePic')!
                 }
 
-                this.$http.post(`/api/image/posts/${this.$route.params.id!}/comments`, comment)
+                this.$http.post(`/api/image/posts/${this.$route.params.id!}/comments`, postComment)
+
+                let hasPfp = localStorage.getItem('profilePic') ? true : false;
+
+                let comment = new CommentModel(localStorage.getItem('user')!, userId!, new Date(), value, hasPfp);
 
                 this.comments.unshift(comment);
 
@@ -83,19 +87,7 @@ export default {
             this.$http.get(`/api/image/posts/${id}/comments`)
                 .then((response) => {
                     response.data.forEach((data: any) => {
-                        let comment = {
-                            userName: data.userName,
-                            date: new Date(data.date),
-                            content: data.content,
-                            pfp: ''
-                        }
-
-                        if (data.hasProfile) {
-                            comment.pfp = `/public/storage/profiles/${data.userId}.png`
-                        } else {
-                            comment.pfp = `/public/storage/profiles/default.png`
-                        }
-
+                        let comment = new CommentModel(data.userName, data.userId, new Date(data.date), data.content, data.hasProfile);
 
                         this.comments.push(comment);
                     })
@@ -132,7 +124,7 @@ export default {
                     <h2>{{ $data.title }}</h2>
                 </section>
                 <div class="row-md">
-                    {{ $data.description }}<span class="comment-date">{{ $data.postUpload }}</span>
+                    {{ $data.description }}<span class="comment-date">{{ $data.postUpload.toLocaleString() }}</span>
                 </div>
             </div>
             <div class="comments-container">
@@ -145,8 +137,8 @@ export default {
                     </div>
                     <TextAreaVue placeholder="Post a comment..." id="commentInput" />
                 </div>
-                <Comment v-for="comment in comments" :user-name="comment.userName" :profile-pic="comment.pfp"
-                    :comment-content="comment.content" :date="comment.date" />
+                <Comment v-for="comment in comments" :user-name="comment.author" :profile-pic="comment.getProfilePath()"
+                    :comment-content="comment.content" :date="comment.getDateString()" />
             </div>
         </main>
         <InfoContainer :user-name=$data.authorName :profile-pic=$data.authorPfp :mini-posts="$data.otherPosts" />

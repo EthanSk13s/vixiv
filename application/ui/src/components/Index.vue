@@ -2,11 +2,13 @@
 import InfoContainer from '@/components/partials/InfoContainer.vue';
 import ThumbnailPost from './partials/ThumbnailPost.vue';
 
+import { MiniPostModel }from '@/models';
+
 export default {
     data() {
         return {
-            latestPosts: [] as { title: any; authorName: any; path: string; postPath: string, pfp: string }[],
-            userPosts: [] as { title: any; authorName: any; path: string; postPath: string, pfp: string }[]
+            latestPosts: [] as MiniPostModel[],
+            userPosts: [] as MiniPostModel[]
         }
     },
     components: {
@@ -17,21 +19,9 @@ export default {
         getLatestPosts() {
             this.$http.get('/api/image/posts/', { params: { limit: 15 } })
                 .then((response) => {
-                    let posts: { title: any; authorName: any; path: string; postPath: string, pfp: string }[] = []
+                    let posts: MiniPostModel[] = []
                     response.data.forEach((element: any) => {
-                        let post = {
-                            title: element.title,
-                            authorName: element.authorName,
-                            path: `/public/storage/thumbnails/${element.postId}.jpg`,
-                            postPath: `/post/${element.postId}`,
-                            pfp: ''
-                        }
-
-                        if (element.hasProfile) {
-                            post.pfp = `/public/storage/profiles/${element.authorId}.png`
-                        } else {
-                            post.pfp = `/public/storage/profiles/default.png`
-                        }
+                        let post = new MiniPostModel(element.title, element.authorName, element.postId, element.hasProfile, element.authorId);
 
                         posts.push(post);
                     });
@@ -42,21 +32,9 @@ export default {
             let userId = localStorage.getItem('id');
             this.$http.get('/api/image/posts/', { params: { limit: 15, user: userId } })
                 .then((response) => {
-                    let posts: { title: any; authorName: any; path: string; postPath: string, pfp: string }[] = []
+                    let posts: MiniPostModel[] = []
                     response.data.forEach((element: any) => {
-                        let post = {
-                            title: element.title,
-                            authorName: element.authorName,
-                            path: `/public/storage/thumbnails/${element.postId}.jpg`,
-                            postPath: `/post/${element.postId}`,
-                            pfp: ''
-                        }
-
-                        if (element.hasProfile) {
-                            post.pfp = `/public/storage/profiles/${userId}.png`
-                        } else {
-                            post.pfp = `/public/storage/profiles/default.png`
-                        }
+                        let post = new MiniPostModel(element.title, element.authorName, element.postId, element.hasProfile, element.authorId);
 
                         posts.push(post);
                     });
@@ -84,16 +62,16 @@ export default {
                 </div>
                 <div class="flex-container row post-flex">
                     <ThumbnailPost v-if="latestPosts" v-for="post in latestPosts" :author="post.authorName"
-                        :authorPfp="post.pfp" :title="post.title"
-                        :image="post.path" :postPath="post.postPath" />
+                        :authorPfp="post.getProfilePath()" :title="post.title"
+                        :image="post.getThumbnailPath()" :postPath="post.getPostPath()" />
                 </div>
                 <div v-if="userPosts.length != 0">
                     <h2>Your Posts</h2>
                 </div>
                 <div class="flex-container row post-flex">
                     <ThumbnailPost v-if="userPosts.length != 0" v-for="post in userPosts" :author="post.authorName"
-                        :authorPfp="post.pfp" :title="post.title"
-                        :image="post.path" :postPath="post.postPath" />
+                        :authorPfp="post.getProfilePath()" :title="post.title"
+                        :image="post.getThumbnailPath()" :postPath="post.getPostPath()" />
                 </div>
             </section>
         </main>
