@@ -61,4 +61,6 @@ typings/
 .next
 
 public/storage/images/*.png
+public/storage/profiles/*.png
+public/storage/profiles/!default.png
 public/storage/thumbnails/*.jpg
