@@ -96,13 +96,11 @@ export default {
     },
     beforeMount() {
         this.$http.get('/session')
-            .then((response) => {
-                if (response.status != 200) {
-                    const user = userStore();
-                    user.$reset();
+            .catch((error) => {
+                const user = userStore();
+                user.$reset();
 
-                    localStorage.clear();
-                }
+                localStorage.clear();
             })
 
     },

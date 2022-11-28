@@ -15,6 +15,7 @@ router.get('/logout', function (req: Request, res: Response, next: NextFunction)
     req.session.destroy((err) => {
         if (err) next(err);
 
+        res.clearCookie("connect.sid", { path: "/" });
         res.sendStatus(200);
     })
 });
@@ -22,6 +23,8 @@ router.get('/logout', function (req: Request, res: Response, next: NextFunction)
 router.get('/session', function (req: Request, res: Response) {
     if (req.session.user) {
         res.sendStatus(200)
+    } else {
+        res.clearCookie("connect.sid", { path: "/" }).sendStatus(403);
     }
 })
 
