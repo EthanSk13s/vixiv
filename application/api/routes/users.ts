@@ -53,7 +53,7 @@ router.post('/profile', upload.single('avatar-crop'), async function (req: Reque
 
     if (req.body.password) {
         let hashedPass: string = await bcrypt.hash(req.body.password, SALT_ROUNDS);
-        await conn.execute('UPDATE users SET has_profile=1 WHERE id=?', [hashedPass, userId]);
+        await conn.execute('UPDATE users SET password=? WHERE id=?', [hashedPass, userId]);
     }
     res.sendStatus(200);
 });
