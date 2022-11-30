@@ -34,6 +34,10 @@ router.post('/profile', upload.single('avatar-crop'), async function (req: Reque
     const userId = req.session.user;
     const conn = db;
 
+    if (!userId) {
+        res.sendStatus(403);
+    }
+
     // Convert to png
     if (req.file) {
         sharp(req.file.buffer)

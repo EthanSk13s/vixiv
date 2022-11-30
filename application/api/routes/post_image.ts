@@ -59,6 +59,10 @@ router.post('/', upload.single('file-upload'),  async (req: Request, res: Respon
     const userId = req.session.user
     const postId = genID();
 
+    if (!userId) {
+        return res.sendStatus(403);
+    }
+
     // Convert to png
     sharp(req.file?.buffer)
         .toFormat('png')
@@ -156,6 +160,10 @@ async function getComments(postId: string) {
 }
 
 router.post('/posts/:id/comments', async (req: Request, res: Response, next: NextFunction) => {
+    if (!req.session.user) {
+        return res.sendStatus(403);
+    }
+
     await postComment(req.body.postId, req.body.userId, new Date(req.body.date), req.body.content);
 
     return res.sendStatus(200);
