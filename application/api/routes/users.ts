@@ -42,6 +42,7 @@ router.post('/profile', upload.single('avatar-crop'), async function (req: Reque
     if (req.file) {
         sharp(req.file.buffer)
             .toFormat('png')
+            .resize(512, 512)
             .toFile(path.join(PROFILE_PATH, `${userId}.png`))
 
         await conn.execute('UPDATE users SET has_profile=1 WHERE id=?', [userId]);
