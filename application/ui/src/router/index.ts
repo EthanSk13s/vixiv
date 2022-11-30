@@ -7,6 +7,8 @@ import RegisterView from '@/views/RegisterView.vue'
 import ProfileView from '@/views/ProfileView.vue';
 import axios from 'axios'
 
+import { toastStore } from '@/stores/toast'
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -22,6 +24,10 @@ const router = createRouter({
       beforeEnter: (to, from) => {
         axios.get('/session')
           .catch((error) => {
+            const store = toastStore()
+            store.$patch({type: 'error'})
+            store.$patch({message: 'You must be logged in to access that page'})
+
             router.push('login')
           })
       }
@@ -47,7 +53,11 @@ const router = createRouter({
       beforeEnter: (to, from) => {
         axios.get('/session')
           .catch((error) => {
-            router.push('login')
+            const store = toastStore()
+            store.$patch({type: 'error'})
+            store.$patch({message: 'You must be logged in to access that page'})
+
+            router.push('login');
           })
       }
     }
