@@ -1,5 +1,5 @@
 <script lang="ts">
-import { storeToRefs } from "pinia";
+import { nextTick } from "vue";
 
 import Comment from "./partials/Comment.vue"
 import InfoContainer from "./partials/InfoContainer.vue";
@@ -126,16 +126,26 @@ export default {
         this.fetchPost(String(this.$route.params.id!));
         this.fetchComments(String(this.$route.params.id!));
 
+        // TODO: Rely state checking by user store instead, shouldnt do another session check when
+        // its already being done once.
         this.$http.get('/session')
             .then((response) => {
                 if (response.status == 200) {
                     this.$data.loggedIn = true;
+
+                    nextTick()
+                        .then(() => {
+                            let commentInput = document.getElementById('commentInput');
+
+                            if (commentInput) {
+                                commentInput.addEventListener('keypress', this.createComment);
+                            }
+                        })
                 }
             })
-
-        let commentInput = document.getElementById('commentInput');
-
-        commentInput?.addEventListener('keypress', this.createComment);
+            .catch((error) => {
+                // Catch to silent console error
+            })
     }
 }
 </script>
@@ -162,8 +172,8 @@ export default {
                     <div class="comment-pfp">
                         <img class="comment-pfp" :src="getIcon()" alt="pfp">
                     </div>
-                    <TextAreaVue v-if="loggedIn" placeholder="Post a comment..." id="commentInput"/>
-                    <TextAreaVue v-else placeholder="You must be logged in to post a comment" id="commentInput" :disabled="true"/>
+                    <TextAreaVue v-if="loggedIn" placeholder="Post a comment..." id="commentInput" :disabled="false" />
+                    <TextAreaVue v-else placeholder="You must be logged in to post a comment" :disabled="true" />
                 </div>
                 <Comment v-for="comment in comments" :user-name="comment.author" :profile-pic="comment.getProfilePath()"
                     :comment-content="comment.content" :date="comment.getDateString()" />
