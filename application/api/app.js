@@ -55,7 +55,6 @@ app.use(history({
 app.use(staticFileMiddleWare);
 
 
-// TODO: Convert these to vue pages also remove the stacktrace from client
 /**
  * Catch all route, if we get to here then the 
  * resource requested could not be found.
@@ -69,12 +68,13 @@ app.use((req,res,next) => {
  * with relevant error information.
  */
 app.use(function (err, req, res, next) {
-  res.locals.message = err.message;
-  res.locals.error = err;
   console.log(err);
   // render the error page
   res.status(err.status || 500);
-  res.render("error");
+  res.json({
+    error: err,
+    message: message
+  });
 });
 
 module.exports = app;
