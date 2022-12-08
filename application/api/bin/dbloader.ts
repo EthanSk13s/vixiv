@@ -25,7 +25,7 @@ async function getConnection() {
 
 async function makeDatabase(connection: any) {
   const [result, _] = await connection.query(
-    "CREATE DATABASE IF NOT EXISTS vixiv;"
+    "CREATE DATABASE IF NOT EXISTS ??;", [CONFIG.DB_NAME]
   );
   if (result && result.warningStatus > 0) {
     const [warningResult, _] = await connection.query("SHOW WARNINGS");
@@ -39,7 +39,7 @@ async function makeUsersTable(connection: any) {
   const [result, _] = await connection.query(
     // Users Table SQL Goes here
     `
-    CREATE TABLE IF NOT EXISTS vixiv.users (
+    CREATE TABLE IF NOT EXISTS ??.users (
       id BIGINT NOT NULL,
       username VARCHAR(45) NULL,
       password CHAR(64) NULL,
@@ -47,7 +47,7 @@ async function makeUsersTable(connection: any) {
       has_profile TINYINT(1) NULL,
       PRIMARY KEY (id))
     ENGINE = InnoDB
-    `
+    `, [CONFIG.DB_NAME]
   );
 
   if (result && result.warningStatus > 0) {
@@ -115,7 +115,7 @@ async function makeCommentsTable(connection: any) {
     connection = await getConnection();
     await makeDatabase(connection); // make DB
     //TODO make sure to change yourdbnamehere
-    await connection.query("USE vixiv"); // set new DB to the current DB
+    await connection.query("USE ??", CONFIG.DB_NAME); // set new DB to the current DB
     await makeUsersTable(connection); // try to make user table
     await makePostsTable(connection); // try to make posts table
     await makeCommentsTable(connection); // try to make comments table
