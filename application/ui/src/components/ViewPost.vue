@@ -6,6 +6,7 @@ import InfoContainer from "./partials/InfoContainer.vue";
 import TextAreaVue from "./partials/TextArea.vue";
 
 import { userStore } from "@/stores/user";
+import { toastStore } from "@/stores/toast";
 
 import { CommentModel } from "@/models";
 import { CONFIG } from "../../../config";
@@ -27,9 +28,11 @@ export default {
     },
     setup() {
         const user = userStore();
+        const toast = toastStore();
 
         return {
-            user
+            user,
+            toast
         }
     },
     methods: {
@@ -53,7 +56,7 @@ export default {
                     this.fetchAuthorInfo(String(this.authorId));
                 })
                 .catch(() => {
-                    this.$router.push({'name': 'NotFound'})
+                    this.$router.push({ 'name': 'NotFound' })
                 })
         },
         fetchAuthorInfo(id: string) {
@@ -88,12 +91,16 @@ export default {
                 }
 
                 this.$http.post(`/api/image/posts/${this.$route.params.id!}/comments`, postComment)
+                    .then((response) => {
+                        if (!response.data.error) {
+                            let hasPfp = localStorage.getItem('profilePic') ? true : false;
+                            let comment = new CommentModel(localStorage.getItem('user')!, userId!, new Date(), value, hasPfp);
 
-                let hasPfp = localStorage.getItem('profilePic') ? true : false;
-
-                let comment = new CommentModel(localStorage.getItem('user')!, userId!, new Date(), value, hasPfp);
-
-                this.comments.unshift(comment);
+                            this.comments.unshift(comment);
+                        } else {
+                            this.toast.$patch({type: 'error', message: response.data.error})
+                        }
+                    })
 
                 e.preventDefault();
 

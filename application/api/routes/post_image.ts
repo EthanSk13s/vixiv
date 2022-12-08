@@ -59,7 +59,7 @@ async function getPost(postId: string) {
     return post;
 }
 
-router.post('/', upload.single('file-upload'),  async (req: Request, res: Response, next: NextFunction) => {
+router.post('/', upload.single('file-upload'), async (req: Request, res: Response, next: NextFunction) => {
     const userId = req.session.user
     const postId = genID();
 
@@ -67,25 +67,30 @@ router.post('/', upload.single('file-upload'),  async (req: Request, res: Respon
         return res.sendStatus(403);
     }
 
-    // Convert to png
-    sharp(req.file?.buffer)
-        .toFormat('png')
-        .toFile(path.join(POST_PATH, `${postId}.png`))
+    if (req.body.imageTitle) {
 
-    // Create the thumbnail
-    sharp(req.file?.buffer)
-        .resize(THUMBNAIL_SIZE, THUMBNAIL_SIZE)
-        .toFormat('jpg')
-        .toFile(path.join(THUMBNAIL_PATH, `${postId}.jpg`))
-
-    await createPost(postId!, userId!, req.body.imageTitle, req.body.imageDesc);
-    res.redirect(`/post/${postId}`);
+        // Convert to png
+        sharp(req.file?.buffer)
+            .toFormat('png')
+            .toFile(path.join(POST_PATH, `${postId}.png`))
+            .then(() => {
+                // Create the thumbnail
+                sharp(req.file?.buffer)
+                    .resize(THUMBNAIL_SIZE, THUMBNAIL_SIZE)
+                    .toFormat('jpg')
+                    .toFile(path.join(THUMBNAIL_PATH, `${postId}.jpg`))
+                    .then(async () => {
+                        await createPost(postId!, userId!, req.body.imageTitle, req.body.imageDesc);
+                        res.redirect(`/post/${postId}`);
+                    })
+            })
+    }
 });
 
 router.get('/posts/:id', async (req: Request, res: Response, next: NextFunction) => {
     let post = await getPost(req.params.id);
     if (post) {
-        return res.send({post});
+        return res.send({ post });
     } else {
         return res.sendStatus(404);
     }
@@ -140,7 +145,7 @@ async function postComment(postId: number, userId: number, date: Date, content: 
 
     let sqlQuery = 'INSERT INTO comments(post_id, user_id, comment_date, content) VALUES(?, ?, ?, ?);'
 
-    await conn.query(sqlQuery, [postId, userId, date ,content]);
+    await conn.query(sqlQuery, [postId, userId, date, content]);
 }
 
 async function getComments(postId: string) {
@@ -172,9 +177,15 @@ router.post('/posts/:id/comments', async (req: Request, res: Response, next: Nex
         return res.sendStatus(403);
     }
 
-    await postComment(req.body.postId, req.body.userId, new Date(req.body.date), req.body.content);
+    if (req.body.content) {
+        await postComment(req.body.postId, req.body.userId, new Date(req.body.date), req.body.content);
 
-    return res.sendStatus(200);
+        return res.sendStatus(200);
+    } else {
+        return res.json({
+            error: 'You cannot have an empty comment body.'
+        })
+    }
 })
 
 router.get('/posts/:id/comments', async (req: Request, res: Response, next: NextFunction) => {
