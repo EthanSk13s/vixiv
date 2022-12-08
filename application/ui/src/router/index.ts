@@ -5,6 +5,8 @@ import PostImageView from '../views/PostImageView.vue'
 import LoginView from '../views/LoginView.vue'
 import RegisterView from '@/views/RegisterView.vue'
 import ProfileView from '@/views/ProfileView.vue';
+import NotFoundView from '@/views/NotFound.vue'
+
 import axios from 'axios'
 
 import { toastStore } from '@/stores/toast'
@@ -60,6 +62,11 @@ const router = createRouter({
             router.push('login');
           })
       }
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'NotFound',
+      component: NotFoundView
     }
   ]
 })
