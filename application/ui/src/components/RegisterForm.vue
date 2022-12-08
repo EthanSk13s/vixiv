@@ -60,7 +60,7 @@ export default {
         <h2>Registration</h2>
         <form ref="registerForm" id="main-form" @submit="tryRegister" method="POST">
             <fieldset class="main-field">
-                <TextInput label-name="user" place-holder="Username" />
+                <TextInput label-name="user" place-holder="Username" :required="true"/>
                 <div class="column-md">
                     <label class="input-label" for="email">Email</label>
                     <input class="input-text" type="email" name="email" placeholder="E-mail" required>

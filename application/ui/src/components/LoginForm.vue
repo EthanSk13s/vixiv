@@ -73,7 +73,7 @@ export default {
         <form ref="form" @submit="checkLogin" method="POST">
             <fieldset class="main-field">
                 <div class="column-md">
-                    <TextInput label-name="username" place-holder="Username" v-model="username"/>
+                    <TextInput label-name="username" place-holder="Username" v-model="username" :required="true"/>
                     <div class="column-md">
                         <label class="input-label" for="password">Password</label>
                         <input type="password" class="input-text" placeholder="Password" name="password" v-model="password" required>

@@ -67,7 +67,7 @@ export default {
                     </label>
                     <input name="file-upload" id="file-upload" type="file" accept="image/*" required />
                 </div>
-                <TextInput label-name="imageTitle" place-holder="Title" />
+                <TextInput label-name="imageTitle" place-holder="Title" :required="true"/>
                 <TextInput label-name="imageDesc" place-holder="Description" />
                 <Checkbox name="aup" label-desc="Before posting, please accept the Acceptable Use Policy" />
                 <SubmitButton submit-text="Post Image" />
