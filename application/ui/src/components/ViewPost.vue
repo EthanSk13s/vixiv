@@ -52,6 +52,9 @@ export default {
 
                     this.fetchAuthorInfo(String(this.authorId));
                 })
+                .catch(() => {
+                    this.$router.push({'name': 'NotFound'})
+                })
         },
         fetchAuthorInfo(id: string) {
             this.$http.get('/api/image/posts/', { params: { limit: 3, user: id } })

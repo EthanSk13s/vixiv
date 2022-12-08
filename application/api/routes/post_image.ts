@@ -31,6 +31,7 @@ async function createPost(postId: string, userId: string, title: string, descrip
 
 async function getPost(postId: string) {
     const conn = db;
+    let post: object | null = null;
 
     let [rowsLike] = await conn.query(
         `
@@ -40,16 +41,19 @@ async function getPost(postId: string) {
         `, [postId]
     );
     const rows: RowDataPacket[] = rowsLike as RowDataPacket[];
-    let data = rows[0] as RowDataPacket;
 
-    let post = {
-        postId: data.post_id,
-        title: data.title,
-        description: data.description,
-        postUpload: data.post_upload,
-        authorName: data.username,
-        authorId: data.id,
-        hasProfile: data.has_profile
+    if (rows.length > 0) {
+        let data = rows[0] as RowDataPacket;
+
+        post = {
+            postId: data.post_id,
+            title: data.title,
+            description: data.description,
+            postUpload: data.post_upload,
+            authorName: data.username,
+            authorId: data.id,
+            hasProfile: data.has_profile
+        }
     }
 
     return post;
@@ -80,7 +84,11 @@ router.post('/', upload.single('file-upload'),  async (req: Request, res: Respon
 
 router.get('/posts/:id', async (req: Request, res: Response, next: NextFunction) => {
     let post = await getPost(req.params.id);
-    return res.send({post});
+    if (post) {
+        return res.send({post});
+    } else {
+        return res.sendStatus(404);
+    }
 })
 
 router.get('/posts', async (req: Request, res: Response, next: NextFunction) => {

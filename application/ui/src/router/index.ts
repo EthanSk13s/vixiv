@@ -45,7 +45,7 @@ const router = createRouter({
       component: RegisterView
     },
     {
-      path: '/post/:id',
+      path: '/post/:id(\\d+)',
       component: PostView
     },
     {
