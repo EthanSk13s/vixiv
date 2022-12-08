@@ -24,7 +24,9 @@ router.get('/session', function (req: Request, res: Response) {
     if (req.session.user) {
         res.sendStatus(200)
     } else {
-        res.clearCookie("connect.sid", { path: "/" }).sendStatus(403);
+        if (req.cookies.get('connect.sid')) {
+            res.clearCookie("connect.sid", { path: "/" }).sendStatus(403);
+        }
     }
 })
 
