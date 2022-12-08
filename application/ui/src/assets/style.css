@@ -279,6 +279,10 @@ nav {
   max-height: 100px
 }
 
+.mini-post:hover {
+  opacity: 90%;
+}
+
 .profile-pic {
   width: 150px;
   height: 150px;
