@@ -1,4 +1,6 @@
 <script lang="ts">
+import { RouterLink } from 'vue-router';
+
 export default {
     props: {
         author: String,
@@ -11,7 +13,7 @@ export default {
 </script>
 
 <template>
-    <a class="no-deco" :href="postPath">
+    <RouterLink class="no-deco" :to="postPath!">
         <div class="flex-container post-flex">
             <div class="post-container">
                 <div class="thumbnail-container">
@@ -28,5 +30,5 @@ export default {
                 </div>
             </div>
         </div>
-    </a>
+    </RouterLink>
 </template>
