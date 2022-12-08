@@ -3,9 +3,9 @@ let validPass = false;
 let matchingPass = false;
 
 const validChar = /[a-zA-Z]/;
-const validSpecial = /\W/;
-const validInt = /[0-9]/;
-const hasUpper = /[A-Z]/;
+export const validSpecial = /\W/;
+export const validInt = /[0-9]/;
+export const hasUpper = /[A-Z]/;
 
 function createWarn(text: string, id: string) {
     let container = document.createElement("div");
@@ -149,8 +149,19 @@ export function setEvents() {
     let form = document.getElementById("main-form");
     let confirmPass = document.getElementById("confirmPass");
 
-    user.addEventListener("input", checkUser);
-    form?.addEventListener("submit", checkForm);
-    pass.addEventListener("input", checkPass);
-    confirmPass?.addEventListener("input", matchPass);
+    if (user) {
+        user.addEventListener("input", checkUser);
+    }
+
+    if (form) {
+        form.addEventListener("submit", checkForm);
+    }
+
+    if (pass) {
+        pass.addEventListener("input", checkPass);
+    }
+
+    if (confirmPass) {
+        confirmPass.addEventListener("input", matchPass);
+    }
 }

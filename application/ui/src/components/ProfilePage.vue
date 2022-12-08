@@ -10,6 +10,7 @@ import { toastStore } from '@/stores/toast';
 import { userStore } from '@/stores/user';
 
 import { CONFIG } from '../../../config';
+import { setEvents, validSpecial, validInt, hasUpper } from '@/assets/js/registration';
 
 export default {
     data() {
@@ -184,15 +185,19 @@ export default {
                 this.$data.formData.append('username', username);
             }
 
-            if (password) {
+            if (password && validInt.exec(password.toString()) &&
+                validSpecial.exec(password.toString()) && hasUpper.exec(password.toString())) {
                 this.$data.formData.append('password', password);
+            } else {
+                this.toast.$patch({type: 'error', message: 'Your password does not meet the requirements.'})
+                return
             }
 
             this.$http.post(`/api/users/profile/`, this.$data.formData)
                 .then((response) => {
                     if (response.status == 200) {
                         if (username) {
-                            this.user.$patch({name: username as string})
+                            this.user.$patch({ name: username as string })
                             localStorage.setItem('user', username as string);
                         }
 
@@ -200,7 +205,7 @@ export default {
                             let userId = localStorage.getItem('id');
                             let path = `/public/storage/profiles/${userId}.png`
 
-                            this.user.$patch({profilePic: path});
+                            this.user.$patch({ profilePic: path });
                             localStorage.setItem('profilePic', path);
                         }
 
@@ -220,6 +225,7 @@ export default {
             this.fetchData(userId);
         }
         this.addFileListener();
+        setEvents();
 
     }
 }
@@ -249,14 +255,14 @@ export default {
                     <input name="avatar" id="file-upload" type="file" accept="image/*" />
                 </div>
                 <form ref="updateForm" @submit="postData" method="POST" enctype="multipart/form-data">
-                    <TextInput label-name="username" place-holder="New Username" :required="false"/>
+                    <TextInput label-name="username" place-holder="New Username" :required="false" />
                     <div class="column-md">
                         <label class="input-label" for="password">New Password</label>
                         <input type="password" class="input-text" placeholder="New Password" name="password">
                     </div>
                     <div class="column-md">
                         <label class="input-label" for="password">Confrim New Password</label>
-                        <input type="password" class="input-text" placeholder="Confirm New Password"
+                        <input id="confirmPass" type="password" class="input-text" placeholder="Confirm New Password"
                             name="confirmPassword">
                     </div>
                     <SubmitButton submit-text="Update Info" />
