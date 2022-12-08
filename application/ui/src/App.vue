@@ -92,6 +92,13 @@ export default {
             } else {
                 this.searchResults = [];
             }
+        },
+        handleInput(e: KeyboardEvent) {
+            if (e.key === 'Enter') {
+                if (this.searchResults.length > 0) {
+                    this.$router.push(this.searchResults[0].postPath);
+                }
+            }
         }
     },
     beforeMount() {
@@ -107,6 +114,7 @@ export default {
     mounted() {
         let searchBar = document.getElementById("postSearch");
         searchBar?.addEventListener('input', this.getSearchResults);
+        searchBar?.addEventListener('keypress', this.handleInput);
     }
 }
 </script>
