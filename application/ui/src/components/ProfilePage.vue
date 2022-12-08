@@ -206,6 +206,10 @@ export default {
 
                         this.toast.$patch({ type: 'success' });
                         this.toast.$patch({ message: 'Information has been updated' });
+
+                        setTimeout(() => {
+                            this.$router.go(0);
+                        }, 3000)
                     }
                 });
         }
@@ -258,7 +262,6 @@ export default {
                     <SubmitButton submit-text="Update Info" />
                 </form>
             </div>
-
         </div>
     </div>
 </template>
