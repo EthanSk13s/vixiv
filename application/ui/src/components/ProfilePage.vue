@@ -245,7 +245,7 @@ export default {
                     <input name="avatar" id="file-upload" type="file" accept="image/*" />
                 </div>
                 <form ref="updateForm" @submit="postData" method="POST" enctype="multipart/form-data">
-                    <TextInput label-name="Change Username" place-holder="New Username" />
+                    <TextInput label-name="username" place-holder="New Username" :required="false"/>
                     <div class="column-md">
                         <label class="input-label" for="password">New Password</label>
                         <input type="password" class="input-text" placeholder="New Password" name="password">
