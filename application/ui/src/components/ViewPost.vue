@@ -35,6 +35,15 @@ export default {
             toast
         }
     },
+    created() {
+    this.$watch(
+      () => this.$route.params,
+      () => {
+        this.fetchPost(String(this.$route.params.id)!);
+      },
+      { immediate: true }
+    )
+    },
     methods: {
         fetchPost(id: string) {
             this.$http.get(`/api/image/posts/${id}`)
