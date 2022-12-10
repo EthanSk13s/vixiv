@@ -19,7 +19,9 @@ export default {
                 <div class="thumbnail-container">
                     <img class="thumbnail-container" :src=image alt="">
                 </div>
-                {{ title }}
+                <div class="title">
+                    {{ title }}
+                </div>
                 <div class="author-container">
                     <div class="author-pfp">
                         <img :src=authorPfp alt="" class="author-pfp">

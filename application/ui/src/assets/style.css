@@ -108,8 +108,8 @@ body {
   gap: 0.15em;
   flex-direction: column;
   border-radius: 0.5em;
+  min-width: auto;
   width: 180px;
-  height: 180px;
   transition: all 0.3s ease-in-out;
 }
 
@@ -319,10 +319,10 @@ nav {
 }
 
 .title {
-  min-width: 0;
+  min-width: 0px;
   white-space: nowrap;
   text-overflow: ellipsis;
-  overflow: hidden
+  overflow: hidden;
 }
 
 .author-container {
