@@ -42,7 +42,7 @@ if (localStorage.getItem('user')) {
     <ToastMessage ref="toasty" :message='message' :type='type' />
     <RouterView />
     <footer class="flex-container column">
-        Some statistics for this site or something
+        &#169; 2022 Some Image Viewer
     </footer>
 </template>
 
