@@ -185,12 +185,14 @@ export default {
                 this.$data.formData.append('username', username);
             }
 
-            if (password && validInt.exec(password.toString()) &&
-                validSpecial.exec(password.toString()) && hasUpper.exec(password.toString())) {
-                this.$data.formData.append('password', password);
-            } else {
-                this.toast.$patch({type: 'error', message: 'Your password does not meet the requirements.'})
-                return
+            if (password) {
+                if (validInt.exec(password.toString()) &&
+                    validSpecial.exec(password.toString()) && hasUpper.exec(password.toString())) {
+                    this.$data.formData.append('password', password);
+                } else {
+                    this.toast.$patch({ type: 'error', message: 'Your password does not meet the requirements.' })
+                    return
+                }
             }
 
             this.$http.post(`/api/users/profile/`, this.$data.formData)
