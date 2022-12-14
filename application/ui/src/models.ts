@@ -1,6 +1,6 @@
 import { CONFIG } from "../../config";
 
-const DEFAULT_PROFILE_PATH = `${CONFIG.PFP_PATH}/default.png`
+export const DEFAULT_PROFILE_PATH = `${CONFIG.PFP_PATH}/default.png`
 function checkBoolean(x: boolean, cond1: any, cond2: any) {
     if (x) {
         return cond1;

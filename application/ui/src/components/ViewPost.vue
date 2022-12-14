@@ -8,7 +8,7 @@ import TextAreaVue from "./partials/TextArea.vue";
 import { userStore } from "@/stores/user";
 import { toastStore } from "@/stores/toast";
 
-import { CommentModel } from "@/models";
+import { CommentModel, DEFAULT_PROFILE_PATH } from "@/models";
 import { CONFIG } from "../../../config";
 
 export default {
@@ -102,7 +102,12 @@ export default {
                 this.$http.post(`/api/image/posts/${this.$route.params.id!}/comments`, postComment)
                     .then((response) => {
                         if (!response.data.error) {
-                            let hasPfp = localStorage.getItem('profilePic') ? true : false;
+                            let pfp = localStorage.getItem('profilePic');
+                            let hasPfp = false;
+
+                            if (pfp !== DEFAULT_PROFILE_PATH) {
+                                hasPfp = true;
+                            }
                             let comment = new CommentModel(localStorage.getItem('user')!, userId!, new Date(), value, hasPfp);
 
                             this.comments.unshift(comment);
